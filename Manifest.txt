@@ -4,4 +4,9 @@ README.txt
 Rakefile
 bin/semi-static
 lib/semi-static.rb
-test/test_semi-static.rb
+lib/semi-static/base.rb
+lib/semi-static/layout.rb
+lib/semi-static/site.rb
+test/helper.rb
+test/source/_layouts/default.haml
+test/test_layout.rb
