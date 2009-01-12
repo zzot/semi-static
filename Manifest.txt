@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/semi-static
+lib/semi-static.rb
+test/test_semi-static.rb
