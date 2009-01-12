@@ -1,3 +1,3 @@
-class Semi-static
-  VERSION = '1.0.0'
+class SemiStatic
+  VERSION = '0.0.1'
 end

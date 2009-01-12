@@ -4,11 +4,8 @@ require 'rubygems'
 require 'hoe'
 require './lib/semi-static.rb'
 
-Hoe.new('semi-static', Semi-static::VERSION) do |p|
-    p.name    = 'semi-static'
-    p.version = SemiStatic::VERSION
-    p.author  = [ 'Josh Dady' ]
-    p.email   = 'noise@zzot.net'
+Hoe.new('semi-static', SemiStatic::VERSION) do |p|
+    p.developer 'Josh Dady', 'noise@zzot.net'
 end
 
 # vim: syntax=Ruby
