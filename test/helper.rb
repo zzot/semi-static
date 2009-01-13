@@ -11,12 +11,6 @@ class Test::Unit::TestCase
         end
     end
     
-    def with_site(source_dir)
-        raise ArugmentError, "block required" unless block_given?
-        site = SemiStatic::Site.new source_dir
-        yield site
-    end
-    
     def ref(name)
         path = File.join File.dirname(__FILE__), 'ref', name
         return File.read(path)
