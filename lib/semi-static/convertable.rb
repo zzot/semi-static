@@ -5,9 +5,9 @@ module SemiStatic
                 eval "#{name.to_s} = options[name]"
             end
             
-            case self.ext
+            case self.source_ext
             when '.haml'
-                Haml::Engine.new(self.content).render(binding)
+                Haml::Engine.new(self.source_content).render(binding)
             else
                 raise ArgumentError, "Unsupported format: #{self.file}"
             end
