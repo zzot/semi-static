@@ -8,7 +8,7 @@ class TestLayout < Test::Unit::TestCase
             assert_not_nil site
             assert_not_nil site.layouts
             assert_equal 2, site.layouts.length
-            assert_equal [ :post, :default ], site.layouts.keys
+            assert_equal [ :default, :post ], site.layouts.keys.sort { |l,r| l.to_s <=> r.to_s }
             assert_not_nil site.layouts[:default]
             assert_not_nil site.layouts[:post]
         end

@@ -8,7 +8,7 @@ class TestPage < Test::Unit::TestCase
             assert_not_nil site
             assert_not_nil site.pages
             assert_equal 2, site.pages.length
-            assert_equal [ './colophon.html', './about.html' ], site.pages.keys
+            assert_equal [ './about.html', './colophon.html' ], site.pages.keys.sort
             assert_not_nil site.pages['./about.html']
             assert_not_nil site.pages['./colophon.html']
         end
