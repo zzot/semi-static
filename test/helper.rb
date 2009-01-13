@@ -4,6 +4,13 @@ require "#{File.dirname __FILE__}/../lib/semi-static"
 class Test::Unit::TestCase
     TEST_SOURCE_DIR = File.join(File.dirname(__FILE__), 'source')
     
+    def with_test_site
+        raise ArgumentError, "block required" unless block_given?
+        site = SemiStatic::Site.open(TEST_SOURCE_DIR) do |site|
+            yield site
+        end
+    end
+    
     def with_site(source_dir)
         raise ArugmentError, "block required" unless block_given?
         site = SemiStatic::Site.new source_dir

@@ -4,7 +4,7 @@ require "#{File.dirname __FILE__}/helper"
 
 class TestLayout < Test::Unit::TestCase
     def test_layout_list
-        with_site(TEST_SOURCE_DIR) do |site|
+        with_test_site do |site|
             assert_not_nil site
             assert_not_nil site.layouts
             assert_equal 2, site.layouts.length
@@ -15,7 +15,7 @@ class TestLayout < Test::Unit::TestCase
     end
     
     def test_default_layout
-        with_site(TEST_SOURCE_DIR) do |site|
+        with_test_site do |site|
             src = '<p>Hello World!</p>'
             dst = site.layouts[:default].render(src, site, :title => 'Layout Test')
             
@@ -35,7 +35,7 @@ class TestLayout < Test::Unit::TestCase
     end
     
     def test_post_layout
-        with_site(TEST_SOURCE_DIR) do |site|
+        with_test_site do |site|
             src = '<p>Hello World!</p>'
             
             post = Post.new

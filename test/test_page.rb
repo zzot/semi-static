@@ -4,7 +4,7 @@ require "#{File.dirname __FILE__}/helper"
 
 class TestPage < Test::Unit::TestCase
     def test_page_list
-        with_site(TEST_SOURCE_DIR) do |site|
+        with_test_site do |site|
             assert_not_nil site
             assert_not_nil site.pages
             assert_equal 2, site.pages.length

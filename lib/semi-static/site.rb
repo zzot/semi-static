@@ -8,6 +8,12 @@ module SemiStatic
             load
         end
         
+        def self.open(source_dir)
+            raise ArugmentError, "block required" unless block_given?
+            site = SemiStatic::Site.new source_dir
+            yield site
+        end
+        
       private
         def with_source_files(pattern)
             raise ArgumentError unless block_given?
