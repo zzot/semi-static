@@ -36,7 +36,7 @@ module SemiStatic
                 
                 file = File.basename(path)
                 if file[0..0] != '_'
-                    layout = Layout.new self.source_dir, path
+                    layout = Layout.new path
                     self.layouts[layout.name.to_sym] = layout
                 end
             end
@@ -48,7 +48,7 @@ module SemiStatic
                 next if File.directory?(path)
                 next unless path.split('/').grep(/^_/).empty?
                 
-                page = Page.new self.source_dir, path
+                page = Page.new path
                 self.pages[page.uri] = page
             end
         end

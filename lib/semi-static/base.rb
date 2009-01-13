@@ -1,9 +1,8 @@
 module SemiStatic
     class Base
-        attr_reader :base, :dir, :file, :name, :ext, :content, :metadata
+        attr_reader :dir, :file, :name, :ext, :content, :metadata
         
-        def initialize(base, path)
-            @base = base
+        def initialize(path)
             @dir, @file = File.split(path)
             @ext = File.extname(file)
             @name = File.basename(file, ext)
