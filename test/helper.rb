@@ -9,4 +9,9 @@ class Test::Unit::TestCase
         site = SemiStatic::Site.new source_dir
         yield site
     end
+    
+    def ref(name)
+        path = File.join File.dirname(__FILE__), 'ref', name
+        return File.read(path)
+    end
 end
