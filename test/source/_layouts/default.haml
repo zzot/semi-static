@@ -1,1 +1,25 @@
 !!! Strict
+
+%html{ html_attrs }
+  %head
+    %meta{ content_type_attrs }
+    %title= title
+    %meta{ :name => 'author', :content => 'Josh Dady' }
+  
+  %body{ body_attrs }
+    #site
+      #header
+        %h1.title
+          %a{ :href => '/' } Test Website
+        %ul.nav
+          %li.nav-home
+            %a{ :href => '/' } Home
+          %li.nav-about
+            %a{ :href => '/about.html' } About
+          %li.nav-colophon
+            %a{ :href => '/colophon.html' } Colophon
+      #body= content
+      #footer
+        %p
+          Copyright © 2003–2009 Josh Dady.
+          %a{ :href => '/terms.html' } Some rights reserved.
