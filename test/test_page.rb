@@ -32,4 +32,23 @@ class TestPage < Test::Unit::TestCase
             assert_equal ref('test_page/about.html'), page.render(site)
         end
     end
+    
+    def test_colophon_page
+        with_test_site_page('/colophon') do |site, page|
+            # Make sure we got a page, and that its name matches our request
+            assert_not_nil page
+            assert_equal '/colophon', page.name
+            
+            # Test the various path/uri attributes
+            assert_equal 'colophon.md', page.source_path
+            assert_equal 'colophon.html', page.output_path
+            assert_equal '/colophon.html', page.uri
+            
+            # Test that the metadata was processed correctly
+            assert_equal 'Colophon', page.title
+            assert_equal 'default', page.layout
+            
+            assert_equal ref('test_page/colophon.html'), page.render(site)
+        end
+    end
 end
