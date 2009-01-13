@@ -49,7 +49,7 @@ module SemiStatic
                 next unless path.split('/').grep(/^_/).empty?
                 
                 page = Page.new path
-                self.pages[page.uri] = page
+                self.pages[page.name] = page
             end
         end
     end
