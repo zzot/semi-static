@@ -16,6 +16,7 @@ module SemiStatic
         end
         
         def render(site, options={})
+            options = { :page => self }.merge(options)
             content = _render(site, options)
             unless self.layout.nil?
                 content = site.layouts[layout.to_sym].render(site, options.merge(:content => content))
