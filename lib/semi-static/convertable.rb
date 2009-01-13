@@ -1,11 +1,13 @@
 module SemiStatic
     module Convertable
-        def _render(content, site, options={})
+        def _render(site, options={})
             for name, value in options
                 eval "#{name.to_s} = options[name]"
             end
             
             case self.source_ext
+            when '.md'
+                Maruku.new(self.source_content).to_html
             when '.haml'
                 Haml::Engine.new(self.source_content).render(binding)
             else
@@ -13,10 +15,10 @@ module SemiStatic
             end
         end
         
-        def render(content, site, options={})
-            content = _render(content, site, options)
+        def render(site, options={})
+            content = _render(site, options)
             unless self.layout.nil?
-                content = site.layouts[layout.to_sym].render(content, site, options)
+                content = site.layouts[layout.to_sym].render(site, options.merge(:content => content))
             end
             return content
         end

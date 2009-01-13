@@ -17,7 +17,7 @@ class TestLayout < Test::Unit::TestCase
     def test_default_layout
         with_test_site do |site|
             src = '<p>Hello World!</p>'
-            dst = site.layouts[:default].render(src, site, :title => 'Layout Test')
+            dst = site.layouts[:default].render(site, :content => src, :title => 'Layout Test')
             
             assert_equal ref('test_layout/default_layout.html'), dst
         end
@@ -39,7 +39,7 @@ class TestLayout < Test::Unit::TestCase
             src = '<p>Hello World!</p>'
             
             post = Post.new
-            dst = site.layouts[:post].render(src, site, :title => post.title, :post => post)
+            dst = site.layouts[:post].render(site, :content => src, :title => post.title, :post => post)
 
             assert_equal ref('test_layout/post_layout.html'), dst
         end

@@ -9,12 +9,19 @@ module SemiStatic
             
             src_base = File.basename(source_path, source_ext)
             @output_dir, src_file = File.split(source_path)
-            @name = File.join(output_dir, src_base)
-            @output_path = "#{name}.html"
-            if src_base == 'index'
-                @uri = File.join(output_dir, '')
+            
+            if output_dir == '.'
+                prefix = ''
             else
-                @uri = output_path
+                prefix = "#{output_dir}/"
+            end
+            @name = "/#{prefix}#{src_base}"
+            @output_path = "#{prefix}#{src_base}.html"
+            
+            if src_base == 'index'
+                @uri = "/#{output_dir}/"
+            else
+                @uri = "/#{output_path}"
             end
         end
     end

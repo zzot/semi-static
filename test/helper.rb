@@ -11,6 +11,14 @@ class Test::Unit::TestCase
         end
     end
     
+    def with_test_site_page(page_name)
+        raise ArgumentError, "block required" unless block_given?
+        with_test_site do |site|
+            assert_not_nil site
+            yield site, site.pages[page_name]
+        end
+    end
+    
     def ref(name)
         path = File.join File.dirname(__FILE__), 'ref', name
         return File.read(path)
