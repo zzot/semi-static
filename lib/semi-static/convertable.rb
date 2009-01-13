@@ -1,6 +1,6 @@
 module SemiStatic
     module Convertable
-        def render(content, site, options={})
+        def _render(content, site, options={})
             for name, value in options
                 eval "#{name.to_s} = options[name]"
             end
@@ -11,6 +11,14 @@ module SemiStatic
             else
                 raise ArgumentError, "Unsupported format: #{self.file}"
             end
+        end
+        
+        def render(content, site, options={})
+            content = _render(content, site, options)
+            unless self.layout.nil?
+                content = site.layouts[layout.to_sym].render(content, site, options)
+            end
+            return content
         end
         
         def content_type_attrs

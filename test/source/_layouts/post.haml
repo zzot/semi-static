@@ -1,0 +1,23 @@
+---
+layout: default
+---
+
+%div[post]
+  .post-header
+    %h2.post-title
+      %a.permalink{ :href => post.permalink }= post.title
+    %ul.post-metadata
+      %li.byline
+        By
+        %span.author= post.author
+        on
+        %span.date= post.date
+        - unless post.time.nil?
+          at
+          %span.time= post.time
+      %li.link
+        %a.permalink{ :href => post.permalink }
+          Permalink
+      %li.comments
+        %a.comments{ :href => post.comments_link }== Comments (#{post.comment_count})
+  .post-body= content

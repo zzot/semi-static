@@ -1,6 +1,6 @@
 module SemiStatic
     class Base
-        attr_reader :base, :dir, :file, :name, :ext, :content, :data
+        attr_reader :base, :dir, :file, :name, :ext, :content, :metadata
         
         def initialize(base, path)
             @base = base
@@ -13,7 +13,15 @@ module SemiStatic
         
         def load
             contents = File.read File.join(dir, file)
-            @content, @data = contents, {}
+            if contents =~ /^(---\s*\n.*?)\n---\s*\n/m
+                @content, @metadata = contents[($1.size + 5) .. -1], YAML.load($1)
+            else
+                @content, @metadata = contents, {}
+            end
+        end
+        
+        def method_missing(method, *args)
+            return metadata[method.to_s]
         end
     end
 end
