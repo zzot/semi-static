@@ -16,10 +16,11 @@ module SemiStatic
             else
                 @source_content, @source_metadata = contents, {}
             end
+            @source_metadata.symbolize_keys
         end
         
         def method_missing(method, *args)
-            return source_metadata[method.to_s]
+            return source_metadata[method.to_sym]
         end
     end
 end

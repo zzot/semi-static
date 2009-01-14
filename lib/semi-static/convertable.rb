@@ -6,7 +6,7 @@ module SemiStatic
             end
             
             case self.source_ext
-            when '.md'
+            when '.md', '.markdown'
                 Maruku.new(self.source_content).to_html
             when '.haml'
                 Haml::Engine.new(self.source_content).render(binding)
