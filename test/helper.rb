@@ -1,3 +1,5 @@
+$VERBOSE = false # Haml creates a lot of noise with this set
+
 require 'test/unit'
 require "#{File.dirname __FILE__}/../lib/semi-static"
 

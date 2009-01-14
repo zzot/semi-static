@@ -1,5 +1,3 @@
-$VERBOSE = false # Haml creates a lot of noise with this set
-
 require "#{File.dirname __FILE__}/helper"
 
 class TestPage < Test::Unit::TestCase
