@@ -28,7 +28,7 @@ module SemiStatic
         end
         
         def permalink
-            return "http://example.com#{uri}"
+            return "#{uri}"
         end
         
         def comments_link

@@ -29,7 +29,7 @@ class TestLayout < Test::Unit::TestCase
         def id; 314159; end
         def title; "Test Post"; end
         def uri; "/2009/01/13/test-post.html"; end
-        def permalink; "http://example.com/2009/01/13/test-post.html"; end
+        def permalink; "/2009/01/13/test-post.html"; end
         def comments_link; "#{uri}#comments"; end
         def author; "Josh Dady"; end
         def date; "January 13, 2009"; end
