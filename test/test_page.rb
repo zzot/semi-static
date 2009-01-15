@@ -25,7 +25,7 @@ class TestPage < Test::Unit::TestCase
             assert_equal 'About this site', page.title
             assert_equal 'default', page.layout
             
-            assert_equal ref('test_page/about.html'), page.render(site)
+            assert_equal ref('test_page/about.html'), page.render
         end
     end
     
@@ -43,7 +43,7 @@ class TestPage < Test::Unit::TestCase
             assert_equal 'Colophon', page.title
             assert_equal 'default', page.layout
             
-            assert_equal ref('test_page/colophon.html'), page.render(site)
+            assert_equal ref('test_page/colophon.html'), page.render
         end
     end
 end

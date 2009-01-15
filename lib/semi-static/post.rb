@@ -5,7 +5,7 @@ module SemiStatic
         attr_reader :name, :category, :tags, :output_dir, :output_path, :slug,
                     :uri, :created, :updated
         
-        def initialize(path)
+        def initialize(site, path)
             super
             @metadata = [ :title, :layout, :author ]
             

@@ -1,6 +1,6 @@
 module SemiStatic
     module Convertable
-        def _render(site, options={})
+        def _render(options={})
             for name, value in options
                 eval "#{name.to_s} = options[name]"
             end
@@ -15,11 +15,11 @@ module SemiStatic
             end
         end
         
-        def render(site, options={})
+        def render(options={})
             options = { :page => self }.merge(options)
-            content = _render(site, options)
+            content = _render(options)
             unless self.layout.nil?
-                content = site.layouts[layout.to_sym].render(site, options.merge(:content => content))
+                content = site.layouts[layout.to_sym].render(options.merge(:content => content))
             end
             return content
         end

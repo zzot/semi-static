@@ -1,8 +1,9 @@
 module SemiStatic
     class Base
-        attr_reader :source_path, :source_ext, :source_content, :source_metadata
+        attr_reader :site, :source_path, :source_ext, :source_content, :source_metadata
         
-        def initialize(path)
+        def initialize(site, path)
+            @site = site
             @source_path = path
             @source_ext = File.extname(source_path)
             @metadata = []

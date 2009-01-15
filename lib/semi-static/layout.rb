@@ -4,7 +4,7 @@ module SemiStatic
         
         attr_reader :name
         
-        def initialize(path)
+        def initialize(site, path)
             super
             @metadata = [ :layout ]
             
