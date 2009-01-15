@@ -16,7 +16,8 @@ class TestPost < Test::Unit::TestCase
         with_test_site do |site|
             assert_not_nil site
             assert_not_nil site.categories
-            assert_equal [ :Life, :Raves ], site.categories.keys.sort { |l,r| l.to_s <=> r.to_s }
+            assert_equal [ :life, :raves ], site.categories.slugs
+            assert_equal [ 'Life', 'Raves' ], site.categories.names
         end
     end
     
@@ -24,10 +25,10 @@ class TestPost < Test::Unit::TestCase
         with_test_site do |site|
             assert_not_nil site
             assert_not_nil site.tags
-            assert_equal [ :'Auto Show', :'Catching Up', :'Colbert Report',
-                           :'Comedy Central', :RSS, :Travel,
-                           :Typography, :Work, :iPhone ],
-                         site.tags.keys.sort { |l,r| l.to_s <=> r.to_s }
+            assert_equal [ :'auto-show', :'catching-up', :'colbert-report',
+                           :'comedy-central', :iphone, :rss, :travel,
+                           :typography, :work ],
+                         site.tags.slugs
         end
     end
     
@@ -44,7 +45,7 @@ class TestPost < Test::Unit::TestCase
             # Test that the metadata was processed correctly
             assert_equal 'Lighting Up', post.title
             assert_equal 'post', post.layout
-            assert_equal :Life, post.category
+            assert_equal site.categories['Life'], post.category
             
             assert_render_equal_ref 'test_post/lighting-up.html', post
         end

@@ -10,8 +10,15 @@ module SemiStatic
             @metadata = [ :title, :layout, :author ]
             
             @name = File.basename(source_path, source_ext)
-            @category = source_metadata[:category].to_sym
-            @tags = source_metadata[:tags].collect { |t| t.to_sym }
+            
+            @category = site.categories[source_metadata[:category]]
+            @category << self
+            
+            @tags = []
+            for tag in source_metadata[:tags]
+                @tags << site.tags[tag]
+                @tags.last << self
+            end 
             
             if name =~ /^(\d+-\d+-\d+)-(.+)$/
                 @created = Date.parse $1

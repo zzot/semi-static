@@ -56,18 +56,15 @@ module SemiStatic
         
         def load_posts
             @posts = Hash.new
-            @categories = Hash.new { |hash,key| hash[key] = Array.new }
-            @tags = Hash.new { |hash,key| hash[key] = Array.new }
+            @categories = Categories.new
+            @tags = Categories.new
             with_source_files('_posts/*.{html,haml,txt,md,markdown}') do |path|
                 next unless File.file?(path)
                 
                 file = File.basename(path)
                 if file[0..0] != '_'
                     post = Post.new self, path
-                    # puts post.name
                     self.posts[post.name] = post
-                    self.categories[post.category] << post
-                    post.tags.each { |tag| self.tags[tag] << post }
                 end
             end
         end
