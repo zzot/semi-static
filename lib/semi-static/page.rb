@@ -6,6 +6,7 @@ module SemiStatic
         
         def initialize(path)
             super
+            @metadata = [ :title, :layout ]
             
             src_base = File.basename(source_path, source_ext)
             @output_dir, src_file = File.split(source_path)

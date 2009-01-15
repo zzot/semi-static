@@ -6,6 +6,8 @@ module SemiStatic
         
         def initialize(path)
             super
+            @metadata = [ :layout ]
+            
             @name = File.basename(source_path, source_ext)
         end
     end

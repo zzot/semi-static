@@ -5,6 +5,7 @@ module SemiStatic
         def initialize(path)
             @source_path = path
             @source_ext = File.extname(source_path)
+            @metadata = []
             
             load
         end
@@ -20,7 +21,12 @@ module SemiStatic
         end
         
         def method_missing(method, *args)
-            return source_metadata[method.to_sym]
+            name = method.to_sym
+            if @metadata.include?(name)
+                return source_metadata[name]
+            else
+                super
+            end
         end
     end
 end

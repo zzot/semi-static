@@ -30,4 +30,23 @@ class TestPost < Test::Unit::TestCase
                          site.tags.keys.sort { |l,r| l.to_s <=> r.to_s }
         end
     end
+    
+    def test_post_lighting_up
+        with_test_site_post('2008-11-24-lighting-up') do |site,post|
+            # Make sure we got a post, and that its name matches our request
+            assert_equal '2008-11-24-lighting-up', post.name
+            
+            # Test the various path/uri attributes
+            assert_equal '_posts/2008-11-24-lighting-up.markdown', post.source_path
+            assert_equal '2008/11/24/lighting-up.html', post.output_path
+            assert_equal '/2008/11/24/lighting-up.html', post.uri
+            
+            # Test that the metadata was processed correctly
+            assert_equal 'Lighting Up', post.title
+            assert_equal 'post', post.layout
+            assert_equal :Life, post.category
+            
+            assert_equal ref('test_post/lighting-up.html'), post.render(site)
+        end
+    end
 end

@@ -3,7 +3,6 @@ require "#{File.dirname __FILE__}/helper"
 class TestPage < Test::Unit::TestCase
     def test_page_list
         with_test_site do |site|
-            assert_not_nil site
             assert_not_nil site.pages
             assert_equal 2, site.pages.length
             assert_equal [ '/about', '/colophon' ], site.pages.keys.sort
@@ -15,7 +14,6 @@ class TestPage < Test::Unit::TestCase
     def test_about_page
         with_test_site_page('/about') do |site, page|
             # Make sure we got a page, and that its name matches our request
-            assert_not_nil page
             assert_equal '/about', page.name
             
             # Test the various path/uri attributes
@@ -34,7 +32,6 @@ class TestPage < Test::Unit::TestCase
     def test_colophon_page
         with_test_site_page('/colophon') do |site, page|
             # Make sure we got a page, and that its name matches our request
-            assert_not_nil page
             assert_equal '/colophon', page.name
             
             # Test the various path/uri attributes

@@ -9,6 +9,7 @@ class Test::Unit::TestCase
     def with_test_site
         raise ArgumentError, "block required" unless block_given?
         site = SemiStatic::Site.open(TEST_SOURCE_DIR) do |site|
+            assert_not_nil site
             yield site
         end
     end
@@ -16,8 +17,18 @@ class Test::Unit::TestCase
     def with_test_site_page(page_name)
         raise ArgumentError, "block required" unless block_given?
         with_test_site do |site|
-            assert_not_nil site
-            yield site, site.pages[page_name]
+            page = site.pages[page_name]
+            assert_not_nil page
+            yield site, page
+        end
+    end
+    
+    def with_test_site_post(post_name)
+        raise ArgumentError, "block required" unless block_given?
+        with_test_site do |site|
+            post = site.posts[post_name]
+            assert_not_nil post
+            yield site, post
         end
     end
     

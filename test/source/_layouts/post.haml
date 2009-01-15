@@ -12,7 +12,7 @@ layout: default
         %span.author= page.author
         on
         %span.date= page.date
-        - unless page.time.nil?
+        - if page.time?
           at
           %span.time= page.time
       %li.link
