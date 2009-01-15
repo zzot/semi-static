@@ -46,7 +46,7 @@ class TestPost < Test::Unit::TestCase
             assert_equal 'post', post.layout
             assert_equal :Life, post.category
             
-            assert_equal ref('test_post/lighting-up.html'), post.render
+            assert_render_equal_ref 'test_post/lighting-up.html', post
         end
     end
 end

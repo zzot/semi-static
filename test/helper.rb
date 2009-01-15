@@ -1,5 +1,6 @@
 $VERBOSE = false # Haml creates a lot of noise with this set
 
+require 'tempfile'
 require 'test/unit'
 require "#{File.dirname __FILE__}/../lib/semi-static"
 
@@ -35,5 +36,42 @@ class Test::Unit::TestCase
     def ref(name)
         path = File.join File.dirname(__FILE__), 'ref', name
         return File.read(path)
+    end
+    
+    def diff(left, right, options={})
+        Tempfile.open('left') do |t1|
+            t1.write left
+            t1.close
+            Tempfile.open('right') do |t2|
+                t2.write right
+                t2.close
+                
+                cmd = 'diff -u'
+                
+                cmd << " --label '#{options[:left]}'" if options.include?(:left)
+                cmd << " #{t1.path}"
+                
+                cmd << " --label '#{options[:right]}'" if options.include?(:right)
+                cmd << " #{t2.path}"
+                
+                return `#{cmd}`
+            end
+        end
+    end
+
+    def assert_equal_diff(expected, actual, diff_options={})
+        msg = diff expected, actual, diff_options
+        assert_block(msg) { expected == actual }
+    end
+    
+    def assert_render_equal_ref(ref_name, renderable, render_options={}, diff_options={})
+        expected = ref(ref_name)
+        actual = renderable.render(render_options)
+        
+        diff_options[:left] = ref_name unless diff_options.include?(:left)
+        diff_options[:right] = renderable.output_path unless diff_options.include?(:right)
+        
+        msg = diff expected, actual, diff_options
+        assert_block(msg) { expected == actual }
     end
 end
