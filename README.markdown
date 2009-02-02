@@ -5,8 +5,9 @@ Semi-Static is yet another static site generator.  I've been playing around
 with similar systems off and on for years, but its [Jekyll][] that finally
 convinced me to build (and finish) one.  The main idea that I take from
 Jekyll is using [Git][] as the “database”.  The idea from Jekyll that I'm
-ignoring completely is avoiding [Ruby][] code evaluation at all costs[^1] —
-I don't care, and it throws out a few libraries that I _want_ to use.
+ignoring completely is avoiding [Ruby][] code evaluation at all costs — I'm
+not running the thing on a server like [GitHub][] [Pages][], and it
+eliminates a few libraries that I want to use.
 
 At some point Semi-Static had a sister project, Semi-Live that would serve
 up data from the data source dynamically, probably via [Rails][].  I stopped
@@ -61,8 +62,6 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[^1]: With good reason of course — Jekyll is used for GitHub Pages.
 
 [*CMS]:         Content Management System
 [*CSS]:         Cascading Style Sheets
