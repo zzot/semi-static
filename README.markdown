@@ -9,7 +9,7 @@ ignoring completely is avoiding [Ruby][] code evaluation at all costs — I'm
 not running the thing on a server like [GitHub][] [Pages][], and it
 eliminates a few libraries that I want to use.
 
-At some point Semi-Static had a sister project, Semi-Live that would serve
+At some point Semi-Static had a sister project, Semi-Live, that would serve
 up data from the data source dynamically, probably via [Rails][].  I stopped
 working on it not long after I first started, so don't expect to see it
 following its sister off to my [projects][] page.
@@ -27,7 +27,7 @@ Installation
 
 The easiest way to install Semi-Static is via [RubyGems][]:
 
-  $ sudo gem install zzot-semi-static -s http://gems.github.com/
+    $ sudo gem install zzot-semi-static -s http://gems.github.com/
 
 Semi-Static requires the \`Haml\` and \`Maruku\` gems and the \`Pygments\`
 library to be installed.
@@ -35,7 +35,7 @@ library to be installed.
 Usage
 -----
 
-  semi <source path> \[<output path>\]
+  semi source-path \[output-path\]
 
 License
 -------
