@@ -1,5 +1,5 @@
-[Semi-Static][]
-===============
+Semi-Static
+===========
 
 Semi-Static is yet another static site generator.  I've been playing around
 with similar systems off and on for years, but its [Jekyll][] that finally
@@ -34,7 +34,7 @@ library to be installed.
 Usage
 -----
 
-  semi <source path> [<output path>]
+  semi <source path> \[<output path>\]
 
 License
 -------
@@ -62,8 +62,7 @@ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-[^1]:           With good reason of course — Jekyll is used for [GitHub][]
-                [Pages][].
+[^1]: With good reason of course — Jekyll is used for GitHub Pages.
 
 [*CMS]:         Content Management System
 [*CSS]:         Cascading Style Sheets
@@ -83,3 +82,4 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 [maruku]:       http://maruku.rubyforge.org/
 [pygments]:     http://pygments.org/
 [rubygems]:     http://www.rubygems.org/
+[ruby]:         http://ruby-lang.org/
