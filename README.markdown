@@ -35,7 +35,7 @@ library to be installed.
 Usage
 -----
 
-  semi source-path \[output-path\]
+    $ semi source-path \[output-path\]
 
 License
 -------
