@@ -1,13 +1,17 @@
+# Core requirements
+require 'yaml'
+
+# Gem requirements
+require 'rubygems'
 require 'haml'
 require 'maruku'
 
-module SemiStatic
-  VERSION = '0.0.1'
-end
-
 $LOAD_PATH.unshift File.dirname(__FILE__)
+
+# Core extensions
 require 'semi-static/core_ext/hash'
 
+# My classes and modules
 require 'semi-static/base'
 require 'semi-static/convertable'
 require 'semi-static/layout'
