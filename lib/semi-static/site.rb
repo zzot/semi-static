@@ -15,9 +15,9 @@ module SemiStatic
         end
         
       private
-        def with_source_files(pattern)
+        def with_source_files(subdir, pattern)
             raise ArgumentError unless block_given?
-            Dir.chdir(source_dir) do
+            Dir.chdir(File.join(source_dir, subdir)) do
                 Dir.glob(pattern) do |path|
                     yield path
                 end
@@ -32,7 +32,7 @@ module SemiStatic
         
         def load_layouts
             @layouts = Hash.new
-            with_source_files('_layouts/*.haml') do |path|
+            with_source_files('layouts', '*.haml') do |path|
                 next unless File.file?(path)
                 
                 file = File.basename(path)
@@ -45,7 +45,7 @@ module SemiStatic
         
         def load_pages
             @pages = Hash.new
-            with_source_files('**/*.{html,haml,txt,md,markdown}') do |path|
+            with_source_files('pages', '**/*.{html,haml,txt,md,markdown}') do |path|
                 next if File.directory?(path)
                 next unless path.split('/').grep(/^_/).empty?
                 
@@ -58,7 +58,7 @@ module SemiStatic
             @posts = Hash.new
             @categories = Categories.new
             @tags = Categories.new
-            with_source_files('_posts/*.{html,haml,txt,md,markdown}') do |path|
+            with_source_files('posts', '*.{html,haml,txt,md,markdown}') do |path|
                 next unless File.file?(path)
                 
                 file = File.basename(path)

@@ -38,7 +38,7 @@ class TestPost < Test::Unit::TestCase
             assert_equal '2008-11-24-lighting-up', post.name
             
             # Test the various path/uri attributes
-            assert_equal '_posts/2008-11-24-lighting-up.markdown', post.source_path
+            assert_equal '2008-11-24-lighting-up.markdown', post.source_path
             assert_equal '2008/11/24/lighting-up.html', post.output_path
             assert_equal '/2008/11/24/lighting-up.html', post.uri
             
