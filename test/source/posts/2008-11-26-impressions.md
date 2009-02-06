@@ -39,4 +39,4 @@ to so many feeds that are full of crap.
 [wired]:      http://www.wired.com/
 [vt]:         http://www.versiontracker.com/
               
-^[S/N]:       Signal/Noise
+*[S/N]:       Signal/Noise
