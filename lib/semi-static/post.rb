@@ -23,7 +23,8 @@ module SemiStatic
             if name =~ /^(\d+-\d+-\d+)-(.+)$/
                 @created = Date.parse $1
                 @slug = $2
-                @output_path = created.strftime('%Y/%m/%d/') + "#{slug}.html"
+                @output_dir = created.strftime('%Y/%m/%d')
+                @output_path = File.join output_dir, "#{slug}.html"
                 @uri = "/#{output_path}"
             else
                 raise ArgumentError, "Bad file name: #{name}"
