@@ -1,4 +1,5 @@
 # Core requirements
+require 'erb'
 require 'yaml'
 
 # Gem requirements

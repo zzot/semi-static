@@ -32,7 +32,7 @@ module SemiStatic
         
         def load_layouts
             @layouts = Hash.new
-            with_source_files('layouts', '*.haml') do |path|
+            with_source_files('layouts', '*.{haml,erb}') do |path|
                 next unless File.file?(path)
                 
                 file = File.basename(path)
