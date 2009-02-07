@@ -46,7 +46,7 @@ class Test::Unit::TestCase
                 t2.write right
                 t2.close
                 
-                cmd = 'diff -u'
+                cmd = 'diff -ub -I \'^[[:space:]]*$\''
                 
                 cmd << " --label '#{options[:left]}'" if options.include?(:left)
                 cmd << " #{t1.path}"
@@ -72,6 +72,6 @@ class Test::Unit::TestCase
         diff_options[:right] = renderable.output_path unless diff_options.include?(:right)
         
         msg = diff expected, actual, diff_options
-        assert_block(msg) { expected == actual }
+        assert_block(msg) { $?.success? }
     end
 end
