@@ -1,61 +1,86 @@
 require 'optparse'
+require 'webrick'
 
 module SemiStatic
-    module CLI
-        HELP = "Usage:\n" +
-               "    semi [ [ <source path >] <output path> ]\n" +
-               "\n" +
-               "Options:\n"
+    class CLI
+        include WEBrick
+        
+        attr_accessor :source_dir, :output_dir
+        attr_accessor :delete_output_dir
+        attr_accessor :server, :server_port
         
         def self.run
-            options = {}
-            parser = OptionParser.new do |opts|
-                opts.banner = HELP
+            cli = CLI.new
+            opts = OptionParser.new do |opts|
+                opts.banner = 'Usage: semi [<options>] [[<source path>] <output path>]'
+                opts.separator ''
+                opts.separator 'Options:'
                 
-                opts.on('--server [PORT]', 'Start a web server') do |port|
-                    options[:server] = true
-                    options[:server_port] = port || 4000
+                opts.on('-s', '--server [PORT]', Integer,
+                        'Start a web server (on port PORT)') do |port|
+                    cli.server = true
+                    cli.server_port = port || 4000
+                end
+                
+                opts.on('-d', '--[no-]delete', 'Delete output dir first') do |d|
+                    cli.delete_output_dir = d
+                end
+                
+                opts.on_tail('-h', '--help', 'Show this message') do
+                    puts opts
+                    exit
+                end
+                
+                opts.on_tail('-V', '--version', 'Show version number') do
+                    path = File.join File.dirname(__FILE__), '..', '..', 'VERSION.yml'
+                    version = File.open(path) { |io| YAML.load io }
+                    puts "#{version[:major]}.#{version[:minor]}.#{version[:patch]}"
                 end
             end
-            parser.parse!
+            opts.parse!
             
-            source_dir = nil
-            output_dir = nil
             case ARGV.size
             when 0
-                source_dir = '.'
-                output_dir = File.join(source_dir, 'site')
+                cli.source_dir = '.'
+                cli.output_dir = 'site'
             when 1
-                source_dir = '.'
-                output_dir = ARGV[0]
+                cli.source_dir = '.'
+                cli.output_dir = ARGV[0]
             when 2
-                source_dir = ARGV[0]
-                output_dir = ARGV[1]
+                cli.source_dir = ARGV[0]
+                cli.output_dir = ARGV[1]
             else
                 puts 'Invalid options.  Run `semi --help` for assistance.'
                 exit 1
             end
             
+            cli.run
+        end
+        
+        def run
+            generate_site
+            start_server
+        end
+        
+      private
+        def generate_site
             SemiStatic::Site.open(source_dir) do |site|
+                FileUtils.rm_r output_dir
                 site.output output_dir
-            end
-            
-            if options[:server]
-                start_server output_dir, options[:server_port]
             end
         end
         
         # This function, short as it may be, is basically lifted from the
         # equivalent module inside Jekyll.
-        def self.start_server(path, port)
-            require 'webrick'
-            include WEBrick
+        def start_server
+            if server
+                s = HTTPServer.new :DocumentRoot => output_dir,
+                                   :Port => server_port
+                t = Thread.new { s.start }
             
-            s = HTTPServer.new :Port => port, :DocumentRoot => path
-            t = Thread.new { s.start }
-            
-            trap('INT') { s.shutdown }
-            t.join
+                trap('INT') { s.shutdown }
+                t.join
+            end
         end
     end
 end
