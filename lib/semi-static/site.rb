@@ -14,6 +14,21 @@ module SemiStatic
             yield site
         end
         
+        def output(path)
+            FileUtils.mkdir_p path
+            Dir.chdir(path) do
+                pages.each do |name, page|
+                    FileUtils.mkdir_p page.output_dir unless File.directory?(page.output_dir)
+                    File.open(page.output_path, 'w') { |f| f.write page.render }
+                end
+
+                posts.each do |name, post|
+                    FileUtils.mkdir_p post.output_dir unless File.directory?(post.output_dir)
+                    File.open(post.output_path, 'w') { |f| f.write post.render }
+                end
+            end
+        end
+        
       private
         def with_source_files(subdir, pattern)
             raise ArgumentError unless block_given?

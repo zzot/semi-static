@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require File.join(File.dirname(__FILE__), '..', 'lib', 'semi-static')
+require 'semi-static/cli'
+
+SemiStatic::CLI.run
