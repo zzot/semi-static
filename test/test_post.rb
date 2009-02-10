@@ -53,6 +53,7 @@ class TestPost < Test::Unit::TestCase
     end
     
     def test_post_impressions
+        # with_test_site { |site| fail site.posts.to_yaml }
         with_test_site_post('2008-11-26-impressions') do |site,post|
             # Make sure we got what we asked for
             assert_equal '2008-11-26-impressions', post.name

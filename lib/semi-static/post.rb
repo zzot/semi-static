@@ -3,7 +3,7 @@ module SemiStatic
         include Convertable
         
         attr_reader :name, :category, :tags, :output_dir, :output_path, :slug,
-                    :uri, :created, :updated
+                    :uri, :created, :updated, :year, :month, :day
         
         def initialize(site, path)
             super
@@ -49,6 +49,15 @@ module SemiStatic
         
         def date
             created.strftime '%B %e, %Y'
+        end
+        def year
+            created.strftime '%Y'
+        end
+        def month
+            created.strftime '%m'
+        end
+        def day
+            created.strftime '%d'
         end
         
         def time?
