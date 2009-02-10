@@ -6,6 +6,7 @@ require "#{File.dirname __FILE__}/../lib/semi-static"
 
 class Test::Unit::TestCase
     TEST_SOURCE_DIR = File.join(File.dirname(__FILE__), 'source')
+    TEST_OUTPUT_DIR = File.join(File.dirname(__FILE__), 'output')
     
     def with_test_site
         raise ArgumentError, "block required" unless block_given?
@@ -13,6 +14,14 @@ class Test::Unit::TestCase
             assert_not_nil site
             yield site
         end
+    end
+    
+    def with_test_cli
+        raise ArgumentError, "block required" unless block_given?
+        cli = SemiStatic::CLI.new
+        cli.source_dir = TEST_SOURCE_DIR
+        cli.output_dir = TEST_OUTPUT_DIR
+        yield cli
     end
     
     def with_test_site_page(page_name)
@@ -73,5 +82,15 @@ class Test::Unit::TestCase
         
         msg = diff expected, actual, diff_options
         assert_block(msg) { $?.success? }
+    end
+    
+    def assert_directory(path, msg=nil)
+        msg = build_message msg, "Expected to be a directory: <?>", path
+        assert_block(msg) { File.directory? path }
+    end
+    
+    def assert_file(path, msg=nil)
+        msg = build_message msg, "Expected to be a regular file: <?>", path
+        assert_block(msg) { File.file? path }
     end
 end

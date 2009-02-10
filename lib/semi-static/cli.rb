@@ -65,7 +65,7 @@ module SemiStatic
       private
         def generate_site
             SemiStatic::Site.open(source_dir) do |site|
-                FileUtils.rm_r output_dir
+                FileUtils.rm_rf output_dir if delete_output_dir
                 site.output output_dir
             end
         end

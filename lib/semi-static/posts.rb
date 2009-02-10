@@ -33,6 +33,17 @@ module SemiStatic
             end
             return hash if hash.is_a?(Post)
         end
+        
+        def each
+            raise ArgumentError, "block required" unless block_given?
+            posts.each do |year,months|
+                months.each do |month,days|
+                    days.each do |day,posts|
+                        posts.each { |post| yield post }
+                    end
+                end
+            end
+        end
     end
 end
 
