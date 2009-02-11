@@ -2,6 +2,7 @@
 
 <ul>
     <% for month, days in posts -%>
-        <li><%= Date.new(context.year, month.to_i).strftime('%B') %></li>
+        <% date = Date.new context.year, month.to_i -%>
+        <li><a href="<%= date.strftime('/%Y/%m/') %>"><%= date.strftime '%B' %></a></li>
     <% end -%>
 </ul>

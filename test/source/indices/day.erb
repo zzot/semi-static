@@ -2,6 +2,6 @@
 
 <ul>
     <% for name, post in posts -%>
-        <li><%= post.title %></li>
+        <li><a href="<%= post.uri %>"><%= post.title %></a></li>
     <% end -%>
 </ul>

@@ -1,6 +1,7 @@
 <h1><%= context.strftime('%B %Y') %></h1>
 <ul>
     <% for day, items in posts -%>
-        <li><%= day %></li>
+        <% date = Date.new context.year, context.month, day.to_i -%>
+        <li><a href="<%= date.strftime('/%Y/%m/%d/') %>"><%= date.strftime '%e' %></a></li>
     <% end -%>
 </ul>
