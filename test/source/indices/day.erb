@@ -1,3 +1,7 @@
-<h1>Day</h1>
-<h2><%= context.inspect %></h2>
-<h3><%= posts.length %></h3>
+<h1><%= context.strftime('%B %e, %Y') %></h1>
+
+<ul>
+    <% for name, post in posts -%>
+        <li><%= post.title %></li>
+    <% end -%>
+</ul>

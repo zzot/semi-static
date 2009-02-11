@@ -49,19 +49,13 @@ module SemiStatic
             raise ArgumentError, "block required" unless block_given?
             
             posts.each do |year,months|
-                yearposts = []
+                yield year, months
                 months.each do |month,days|
-                    monthposts = []
+                    yield "#{year}/#{month}", days
                     days.each do |day,posts|
                         yield "#{year}/#{month}/#{day}", posts
-                        monthposts << posts
                     end
-                    monthposts.flatten!
-                    yield "#{year}/#{month}", monthposts
-                    yearposts << monthposts
                 end
-                yearposts.flatten!
-                yield year, yearposts
             end
         end
     end

@@ -1,3 +1,7 @@
-<h1>Year</h1>
-<h2><%= context.inspect %></h2>
-<h3><%= posts.length %></h3>
+<h1><%= context.year %></h1>
+
+<ul>
+    <% for month, days in posts -%>
+        <li><%= Date.new(context.year, month.to_i).strftime('%B') %></li>
+    <% end -%>
+</ul>

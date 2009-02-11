@@ -1,3 +1,6 @@
-<h1>Month</h1>
-<h2><%= context.inspect %></h2>
-<h3><%= posts.length %></h3>
+<h1><%= context.strftime('%B %Y') %></h1>
+<ul>
+    <% for day, items in posts -%>
+        <li><%= day %></li>
+    <% end -%>
+</ul>

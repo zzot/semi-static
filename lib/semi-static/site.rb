@@ -43,7 +43,7 @@ module SemiStatic
                                 nil
                             end
                             date_index.posts = posts
-                            date_index.context = dir.split('/').collect { |c| c.to_i }
+                            date_index.context = Date.new *context
                             File.open('index.html', 'w') { |f| f.write date_index.render }
                         end
                     end
