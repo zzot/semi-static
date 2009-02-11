@@ -11,7 +11,7 @@ module SemiStatic
             when '.haml'
                 Haml::Engine.new(self.source_content).render(binding)
             when '.erb'
-                ERB.new(self.source_content).result(binding)
+                ERB.new(self.source_content, nil, '-').result(binding)
             when '.html'
                 self.source_content
             else
