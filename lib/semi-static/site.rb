@@ -1,6 +1,7 @@
 module SemiStatic
     class Site
         attr_reader :source_dir, :layouts, :pages, :posts, :categories, :tags
+        attr_reader :year_index, :month_index, :day_index
         
         def initialize(source_dir)
             @source_dir = source_dir
@@ -26,6 +27,27 @@ module SemiStatic
                     FileUtils.mkdir_p post.output_dir unless File.directory?(post.output_dir)
                     File.open(post.output_path, 'w') { |f| f.write post.render }
                 end
+                
+                unless year_index.nil? && month_index.nil? && day_index.nil?
+                    posts.each_index do |dir, posts|
+                        Dir.chdir(dir) do
+                            context = dir.split('/').collect { |c| c.to_i }
+                            date_index = case context.length
+                            when 1
+                                year_index
+                            when 2
+                                month_index
+                            when 3
+                                day_index
+                            else
+                                nil
+                            end
+                            date_index.posts = posts
+                            date_index.context = dir.split('/').collect { |c| c.to_i }
+                            File.open('index.html', 'w') { |f| f.write date_index.render }
+                        end
+                    end
+                end
             end
         end
         
@@ -43,6 +65,7 @@ module SemiStatic
             load_layouts
             load_pages
             load_posts
+            load_indices
         end
         
         def load_layouts
@@ -75,6 +98,28 @@ module SemiStatic
             @tags = Categories.new
             with_source_files('posts', '*.{html,haml,txt,md,markdown}') do |path|
                 posts << path
+            end
+        end
+        
+        def load_indices
+            return unless File.directory?(File.join(source_dir, 'indices'))
+            
+            with_source_files('indices', '{year,month,day}.{haml,erb}') do |path|
+                # puts path
+                next unless File.file?(path)
+                
+                file = File.basename(path)
+                name = File.basename(file, File.extname(file))
+                case name
+                when 'year'
+                    @year_index = Index.new self, path
+                when 'month'
+                    @month_index = Index.new self, path
+                when 'day'
+                    @day_index = Index.new self, path
+                else
+                    raise ArgumentError, "Unexpected index file: #{path}"
+                end
             end
         end
     end

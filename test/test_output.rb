@@ -9,8 +9,25 @@ class TestOutput < Test::Unit::TestCase
             
             assert_directory TEST_OUTPUT_DIR
             Dir.chdir TEST_OUTPUT_DIR do
-                assert_file 'about.html'
-                assert_file 'colophon.html'
+                assert_file      'about.html'
+                assert_file      'colophon.html'
+                
+                assert_directory '2008'
+                assert_directory '2008/11'
+                assert_directory '2008/11/24'
+                assert_directory '2008/11/26'
+                assert_directory '2008/12'
+                assert_directory '2008/12/04'
+
+                assert_file      '2008/index.html'
+                assert_file      '2008/11/index.html'
+                assert_file      '2008/11/24/index.html'
+                assert_file      '2008/11/24/lighting-up.html'
+                assert_file      '2008/11/26/index.html'
+                assert_file      '2008/11/26/impressions.html'
+                assert_file      '2008/12/index.html'
+                assert_file      '2008/12/04/index.html'
+                assert_file      '2008/12/04/the-working-mans-typeface.html'
             end
         end
     end

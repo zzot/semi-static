@@ -44,6 +44,26 @@ module SemiStatic
                 end
             end
         end
+        
+        def each_index
+            raise ArgumentError, "block required" unless block_given?
+            
+            posts.each do |year,months|
+                yearposts = []
+                months.each do |month,days|
+                    monthposts = []
+                    days.each do |day,posts|
+                        yield "#{year}/#{month}/#{day}", posts
+                        monthposts << posts
+                    end
+                    monthposts.flatten!
+                    yield "#{year}/#{month}", monthposts
+                    yearposts << monthposts
+                end
+                yearposts.flatten!
+                yield year, yearposts
+            end
+        end
     end
 end
 
