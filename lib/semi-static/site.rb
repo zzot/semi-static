@@ -29,9 +29,11 @@ module SemiStatic
                     File.open(post.output_path, 'w') { |f| f.write post.render }
                 end
                 
-                stylesheets.each do |name, stylesheet|
-                    FileUtils.mkdir_p stylesheet.output_dir unless File.directory?(stylesheet.output_dir)
-                    File.open(stylesheet.output_path, 'w') { |f| f.write stylesheet.render }
+                unless stylesheets.nil?
+                    stylesheets.each do |name, stylesheet|
+                        FileUtils.mkdir_p stylesheet.output_dir unless File.directory?(stylesheet.output_dir)
+                        File.open(stylesheet.output_path, 'w') { |f| f.write stylesheet.render }
+                    end
                 end
                 
                 unless year_index.nil? && month_index.nil? && day_index.nil?
