@@ -15,10 +15,12 @@ module SemiStatic
             @category << self
             
             @tags = []
-            for tag in source_metadata[:tags]
-                @tags << site.tags[tag]
-                @tags.last << self
-            end 
+            unless source_metadata[:tags].nil?
+                for tag in source_metadata[:tags]
+                    @tags << site.tags[tag]
+                    @tags.last << self
+                end
+            end
             
             if name =~ /^(\d+-\d+-\d+)-(.+)$/
                 @created = Date.parse $1
