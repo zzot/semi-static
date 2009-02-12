@@ -5,6 +5,7 @@ require 'yaml'
 # Gem requirements
 require 'rubygems'
 require 'haml'
+require 'sass'
 require 'maruku'
 
 $LOAD_PATH.unshift File.dirname(__FILE__)
@@ -16,6 +17,7 @@ require 'semi-static/core_ext/hash'
 require 'semi-static/base'
 require 'semi-static/convertable'
 require 'semi-static/layout'
+require 'semi-static/stylesheet'
 require 'semi-static/page'
 require 'semi-static/post'
 require 'semi-static/posts'

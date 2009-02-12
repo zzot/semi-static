@@ -1,0 +1,25 @@
+body
+  +text_font
+  :font-size 0.9em
+
+#header, #footer
+  :color = !site_alt_color
+  :font-size 0.9em
+
+#header
+  +display_font
+  h1
+    :font-size 2.0em
+
+#nav
+  +display_font
+  ul
+    :list-style none
+
+#footer
+  a
+    :color = !site_alt_color
+
+.footnotes
+  li
+    :font-size small

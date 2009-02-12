@@ -1,0 +1,115 @@
+body
+  :margin 0
+  :padding 0
+  :background 1em 1em url(/images/watermark.png) no-repeat
+  :background-attachment fixed
+#site
+  :margin 2em
+  :min-width 40em
+
+#header, #nav
+  *
+    :margin 0
+    :padding 0
+#header
+  :padding 0 1em
+  h1
+    :margin 1em 0
+
+#nav
+  :width 12em
+  :margin-left -12em
+  :float right
+#body
+  :padding 0 16em 0 1em
+
+#footer
+  :clear right
+  :margin 1em
+  img.feed
+    :vertical-align middle
+    :border 0
+
+.footnotes
+  :margin 0 2em
+  hr
+    :display none
+  li
+    p
+      :display inline
+
+.cc_box
+  :position relative
+  
+  .cc_home
+    :display block
+    :float left
+    :width 60px
+    :height 31px
+    :border 1px solid #cfcfcf
+    :border-width 1px 0 0 1px
+    :background url(http://www.comedycentral.com/comedycentral/video/assets/syndicated-logo-out.png)
+    &:hover
+      :background url(http://www.comedycentral.com/comedycentral/video/assets/syndicated-logo-over.png)
+  .cc_top
+    :font bold 10px Arial,Helvetica,Verdana,sans-serif
+    :float left
+    :width 299px
+    :height 31px
+    :border 1px solid #cfcfcf
+    :border-width 1px 1px 0 0
+    :overflow hidden
+    :color #707070
+    :position relative
+    .cc_show
+      :position relative
+      :background-color #e5e5e5
+      :padding
+        :left 3px
+        :top 2px
+      :height 14px
+      :overflow hidden
+      a
+        :color #707070
+        :text-decoration none
+      .cc_time
+        :position absolute
+        :top 2px
+        :right 3px
+    .cc_title
+      :font-size 11px
+      :color #868686
+      :background-color #f5f5f5
+      :padding 1px 3px 3px 3px
+      :line-height 14px
+      :height 21px
+      :overflow hidden
+      a
+        :color #868686
+        :text-decoration none
+  .cc_object
+    :clear left
+  .cc_links
+    :float left
+    :clear left
+    :width 358px
+    :border 1px solid #cfcfcf
+    :border-top 0
+    :font 10px Arial,Helvetica,Verdana,sans-serif
+    :color #b9b9b9
+    :background-color #f5f5f5
+    a
+      :color #b9b9b9
+      :text-decoration none
+      &:hover
+        :color #67bee2
+        :text-decoration underline
+    .cc_left
+      :width 177px
+      :float left
+      :padding-left 3px
+    .cc_right
+      :width 177px
+      :float left
+  .cc_clear
+    :clear both

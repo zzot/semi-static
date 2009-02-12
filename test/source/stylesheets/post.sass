@@ -1,0 +1,21 @@
+.post-header
+  h2
+    :margin 0
+
+.post-metadata
+  +display_font
+  :font-size x-small
+  :margin 0
+  :color = !post_alt_color
+  :list-style none
+  :padding 0
+
+.post-body
+  .footnotes
+    :color = !post_alt_color
+  :border-bottom = 1px solid !post_alt_color
+  :margin-bottom 1em
+  :padding-bottom 1em
+
+#archives-link
+  :text-align right
