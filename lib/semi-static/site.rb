@@ -1,12 +1,13 @@
 module SemiStatic
     class Site
+        attr_reader :time
         attr_reader :source_dir, :layouts, :pages, :posts, :snippets, :categories, :tags
         attr_reader :year_index, :month_index, :day_index
         attr_reader :metadata, :stylesheets
         
         def initialize(source_dir)
             @source_dir = source_dir
-            
+            @time = Time.now
             load
         end
         
@@ -116,7 +117,7 @@ module SemiStatic
         
         def load_pages
             @pages = Hash.new
-            with_source_files('pages', '**/*.{html,haml,txt,md,markdown}') do |path|
+            with_source_files('pages', '**/*.{html,haml,erb,txt,md,markdown}') do |path|
                 next if File.directory?(path)
                 next unless path.split('/').grep(/^_/).empty?
                 
@@ -129,7 +130,7 @@ module SemiStatic
             @posts = Posts.new(self)
             @categories = Categories.new
             @tags = Categories.new
-            with_source_files('posts', '*.{html,haml,txt,md,markdown}') do |path|
+            with_source_files('posts', '*.{html,haml,erb,txt,md,markdown}') do |path|
                 posts << path
             end
         end
@@ -138,7 +139,7 @@ module SemiStatic
             return unless File.directory?(File.join(source_dir, 'snippets'))
             
             @snippets = Hash.new
-            with_source_files('snippets', '*.{html,haml,txt,md,markdown,erb}') do |path|
+            with_source_files('snippets', '*.{html,haml,erb,txt,md,markdown}') do |path|
                 next unless File.file?(path)
                 next unless ('a'..'z').include?(path[0..0].downcase)
                 

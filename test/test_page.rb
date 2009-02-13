@@ -4,10 +4,11 @@ class TestPage < Test::Unit::TestCase
     def test_page_list
         with_test_site do |site|
             assert_not_nil site.pages
-            assert_equal 2, site.pages.length
-            assert_equal [ '/about', '/colophon' ], site.pages.keys.sort
+            assert_equal 3, site.pages.length
+            assert_equal [ '/about', '/colophon', '/feed' ], site.pages.keys.sort
             assert_not_nil site.pages['/about']
             assert_not_nil site.pages['/colophon']
+            assert_not_nil site.pages['/feed']
         end
     end
     
@@ -44,6 +45,24 @@ class TestPage < Test::Unit::TestCase
             assert_equal 'default', page.layout
             
             assert_render_equal_ref 'test_page/colophon.html', page
+        end
+    end
+    
+    def test_feed_page
+        with_test_site_page('/feed') do |site, page|
+            # Make sure we got what we asked for
+            assert_equal '/feed', page.name
+            
+            # Test the various path/uri attributes
+            assert_equal 'feed.xml.erb', page.source_path
+            assert_equal 'feed.xml', page.output_path
+            assert_equal '/feed.xml', page.uri
+            
+            # Test that the metadata was processed correctly
+            assert_equal nil, page.title
+            assert_equal nil, page.layout
+            
+            # assert_render_equal_ref 'test_page/feed.xml', page
         end
     end
 end

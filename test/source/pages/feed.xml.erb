@@ -1,0 +1,26 @@
+---
+ignore: nil
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>Zzot!</title>
+ <link href="http://zzot.github.com/raw-feeds/atom-full.xml" rel="self"/>
+ <link href="http://zzot.github.com/"/>
+ <updated><%= site.time.xmlschema %></updated>
+ <id>http://zzot.github.com/</id>
+ <author>
+   <name>Josh Dady</name>
+   <!-- <email>josh@example.com</email> -->
+ </author>
+
+<% for name,post in site.posts -%>
+ <entry>
+   <title><%=h  post.title %></title>
+   <link href="http://zzot.github.com<%= post.uri %>"/>
+   <updated><%= post.date %></updated>
+   <id>http://zzot.github.com<%= post.id %></id>
+   <content type="html"><%= post.content %></content>
+ </entry>
+<% end -%>
+</feed>

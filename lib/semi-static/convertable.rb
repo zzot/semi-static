@@ -1,5 +1,7 @@
 module SemiStatic
     module Convertable
+        include ERB::Util
+        
         def _content(options={})
             for name, value in options
                 eval "#{name.to_s} = options[name]"
