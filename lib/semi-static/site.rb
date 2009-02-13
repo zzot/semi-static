@@ -1,6 +1,6 @@
 module SemiStatic
     class Site
-        attr_reader :source_dir, :layouts, :pages, :posts, :categories, :tags
+        attr_reader :source_dir, :layouts, :pages, :posts, :snippets, :categories, :tags
         attr_reader :year_index, :month_index, :day_index
         attr_reader :metadata, :stylesheets
         
@@ -81,6 +81,7 @@ module SemiStatic
             load_layouts
             load_pages
             load_posts
+            load_snippets
             load_indices
         end
         
@@ -130,6 +131,19 @@ module SemiStatic
             @tags = Categories.new
             with_source_files('posts', '*.{html,haml,txt,md,markdown}') do |path|
                 posts << path
+            end
+        end
+        
+        def load_snippets
+            return unless File.directory?(File.join(source_dir, 'snippets'))
+            
+            @snippets = Hash.new
+            with_source_files('snippets', '*.{html,haml,txt,md,markdown,erb}') do |path|
+                next unless File.file?(path)
+                next unless ('a'..'z').include?(path[0..0].downcase)
+                
+                snippet = Snippet.new self, path
+                self.snippets[snippet.name] = snippet
             end
         end
         

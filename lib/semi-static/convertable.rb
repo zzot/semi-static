@@ -26,7 +26,7 @@ module SemiStatic
         
         def render(options={})
             content = self.content(options)
-            unless self.layout.nil?
+            unless !@metadata.include?(:layout) || self.layout.nil?
                 page = options.include?(:page) ? options[:page] : self
                 content = site.layouts[layout.to_sym].render(options.merge(:page => page, :content => content))
             end
@@ -39,6 +39,11 @@ module SemiStatic
         
         def body_attrs
             {}
+        end
+        
+        def snippet(name)
+            name = name.to_s
+            site.snippets[name].render :page => self
         end
         
         # This method is adapted from Haml::Buffer#parse_object_ref -- it's

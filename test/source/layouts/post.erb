@@ -23,12 +23,11 @@ layout: default
           Permalink
         </a>
       </li>
-      <li class='comments'>
-        <a class='comments' href='<%= page.comments_link %>'>Comments (<%= page.comment_count %>)</a>
-      </li>
+      <%= snippet 'comments' %>
     </ul>
   </div>
   <div class='post-body'>
     <%= content %>
   </div>
 </div>
+<%= snippet 'comment-links' %>
