@@ -1,6 +1,7 @@
 module SemiStatic
     module Convertable
         include ERB::Util
+        include Pygmentize
         
         def _content(options={})
             for name, value in options

@@ -1,5 +1,6 @@
 # Core requirements
 require 'erb'
+require 'tempfile'
 require 'yaml'
 
 # Gem requirements
@@ -15,6 +16,7 @@ require 'semi-static/core_ext/hash'
 
 # My classes and modules
 require 'semi-static/base'
+require 'semi-static/pygmentize'
 require 'semi-static/convertable'
 require 'semi-static/layout'
 require 'semi-static/stylesheet'
