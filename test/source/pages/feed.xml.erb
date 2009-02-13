@@ -18,7 +18,7 @@ ignore: nil
  <entry>
    <title><%=h  post.title %></title>
    <link href="http://zzot.github.com<%= post.uri %>"/>
-   <updated><%= post.date %></updated>
+   <updated><%= post.updated.xmlschema %></updated>
    <id>http://zzot.github.com<%= post.id %></id>
    <content type="html"><%= post.content %></content>
  </entry>

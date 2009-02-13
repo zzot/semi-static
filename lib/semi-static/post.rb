@@ -23,7 +23,8 @@ module SemiStatic
             end
             
             if name =~ /^(\d+-\d+-\d+)-(.+)$/
-                @created = Date.parse $1
+                @created = Time.parse $1
+                @updated ||= @created
                 @slug = $2
                 @output_dir = created.strftime('%Y/%m/%d')
                 @output_path = File.join output_dir, "#{slug}.html"
