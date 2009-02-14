@@ -5,7 +5,8 @@ class TestPost < Test::Unit::TestCase
         with_test_site do |site|
             assert_not_nil site
             assert_not_nil site.posts
-            assert_equal 3, site.posts.length
+            assert_equal 4, site.posts.length
+            assert_not_nil site.posts['2005-03-27-a-bash-script-to-mess-with-the-containing-terminalapp-window']
             assert_not_nil site.posts['2008-12-04-the-working-mans-typeface']
             assert_not_nil site.posts['2008-11-26-impressions']
             assert_not_nil site.posts['2008-11-24-lighting-up']
@@ -16,8 +17,8 @@ class TestPost < Test::Unit::TestCase
         with_test_site do |site|
             assert_not_nil site
             assert_not_nil site.categories
-            assert_equal [ :life, :raves ], site.categories.slugs
-            assert_equal [ 'Life', 'Raves' ], site.categories.names
+            assert_equal [ :applescript, :life, :raves ], site.categories.slugs
+            assert_equal [ 'AppleScript', 'Life', 'Raves' ], site.categories.names
         end
     end
     
