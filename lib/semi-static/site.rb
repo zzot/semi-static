@@ -19,6 +19,13 @@ module SemiStatic
         
         def output(path)
             FileUtils.mkdir_p path
+            
+            unless metadata.nil? || !metadata['static'].is_a?(Array)
+                for dir in metadata['static']
+                    FileUtils.cp_r File.join(source_dir, dir), File.join(path, dir)
+                end
+            end
+            
             Dir.chdir(path) do
                 pages.each do |name, page|
                     FileUtils.mkdir_p page.output_dir unless File.directory?(page.output_dir)

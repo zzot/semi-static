@@ -1,3 +1,5 @@
 stylesheets:
   - syntax
   - screen
+static:
+  - scripts
