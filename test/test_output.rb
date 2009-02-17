@@ -9,6 +9,10 @@ class TestOutput < Test::Unit::TestCase
             
             assert_directory TEST_OUTPUT_DIR
             Dir.chdir TEST_OUTPUT_DIR do
+                assert_directory 'scripts'
+                assert_file      'scripts/jquery-1.3.js'
+                assert_file      'scripts/jquery-1.3.min.js'
+                
                 assert_file      'about.html'
                 assert_file      'colophon.html'
                 
