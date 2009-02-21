@@ -47,6 +47,11 @@ class Test::Unit::TestCase
         return File.read(path)
     end
     
+    def out(path)
+        path = File.join File.dirname(__FILE__), 'output', path
+        return File.read(path)
+    end
+    
     def diff(left, right, options={})
         Tempfile.open('left') do |t1|
             t1.write left
@@ -76,9 +81,10 @@ class Test::Unit::TestCase
     def assert_render_equal_ref(ref_name, renderable, render_options={}, diff_options={})
         expected = ref(ref_name)
         actual = renderable.render(render_options)
-        
-        diff_options[:left] = ref_name unless diff_options.include?(:left)
-        diff_options[:right] = renderable.output_path unless diff_options.include?(:right)
+        diff_options = { :left => ref_name, :right => renderable.name }.merge diff_options
+
+        # diff_options[:left] = ref_name unless diff_options.include?(:left)
+        # diff_options[:right] = renderable.output_path unless diff_options.include?(:right)
         
         msg = diff expected, actual, diff_options
         assert_block(msg) { $?.success? }
@@ -92,5 +98,14 @@ class Test::Unit::TestCase
     def assert_file(path, msg=nil)
         msg = build_message msg, "Expected to be a regular file: <?>", path
         assert_block(msg) { File.file? path }
+    end
+    
+    def assert_file_equal_ref(ref_name, out_path, diff_options={})
+        expected = ref(ref_name)
+        actual = out(out_path)
+        diff_options = { :left => ref_name, :right => out_path }.merge diff_options
+        
+        msg = diff expected, actual, diff_options
+        assert_block(msg) { $?.success? }
     end
 end
