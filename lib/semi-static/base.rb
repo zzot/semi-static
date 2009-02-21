@@ -21,6 +21,21 @@ module SemiStatic
             @source_metadata.symbolize_keys
         end
         
+        def time(context)
+            raise ArgumentError, "block required" unless block_given?
+            before = Time.now
+            value = yield
+            after = Time.now
+            
+            unless site.stats.nil?
+                time = (after - before)
+                site.stats["#{self.class.name.split('::').last}"] << time
+                # site.stats[context] << time
+            end
+            
+            return value
+        end
+        
         def method_missing(method, *args)
             name = method.to_sym
             if @metadata.include?(name)

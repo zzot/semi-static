@@ -5,6 +5,8 @@ module SemiStatic
         attr_reader :year_index, :month_index, :day_index
         attr_reader :metadata, :stylesheets
         
+        attr_accessor :stats
+        
         def initialize(source_dir)
             @source_dir = source_dir
             @time = Time.now
@@ -21,11 +23,18 @@ module SemiStatic
             FileUtils.mkdir_p path
             
             unless metadata.nil? || !metadata['static'].is_a?(Array)
+                before = Time.now
                 for dir in metadata['static']
                     FileUtils.cp_r File.join(source_dir, dir), File.join(path, dir)
                 end
+                after = Time.now
+                unless self.stats.nil?
+                    time = after - before
+                    self.stats['Static'] << time
+                end
             end
             
+            before = Time.now
             Dir.chdir(path) do
                 pages.each do |name, page|
                     FileUtils.mkdir_p page.output_dir unless File.directory?(page.output_dir)
@@ -64,6 +73,11 @@ module SemiStatic
                         end
                     end
                 end
+            end
+            after = Time.now
+            unless self.stats.nil?
+                time = after - before
+                self.stats['Site'] << time
             end
         end
         

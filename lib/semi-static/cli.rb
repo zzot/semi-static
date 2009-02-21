@@ -65,8 +65,34 @@ module SemiStatic
       private
         def generate_site
             SemiStatic::Site.open(source_dir) do |site|
+                site.stats = Hash.new { |hash,key| hash[key] = Array.new }
+                
                 FileUtils.rm_rf output_dir if delete_output_dir
                 site.output output_dir
+                
+                site.stats.reject { |key,value| key == 'site'}.each do |name,values|
+                    sum, min, max = 0, nil, nil
+                    values.each do |value|
+                        if min.nil?
+                            min = value
+                        else
+                            min = value if value < min
+                        end
+                        if max.nil?
+                            max = value
+                        else
+                            max = value if value > max
+                        end
+                        sum += value
+                    end
+                    avg = sum / values.length
+                    
+                    if values.length > 1
+                        printf "%10s c:%-3d sum:%9.6f min:%.6f max:%.6f avg:%.6f\n", name, values.length, sum, min, max, avg
+                    else
+                        printf "%10s c:%-3d sum:%9.6f\n", name, values.length, sum
+                    end
+                end
             end
         end
         

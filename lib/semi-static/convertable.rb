@@ -10,13 +10,13 @@ module SemiStatic
             
             case self.source_ext
             when '.md', '.markdown'
-                Maruku.new(self.source_content).to_html
+                time('markdown') { Maruku.new(self.source_content).to_html }
             when '.haml'
-                Haml::Engine.new(self.source_content).render(binding)
+                time('haml') { Haml::Engine.new(self.source_content).render(binding) }
             when '.erb'
-                ERB.new(self.source_content, nil, '-').result(binding)
+                time('erb') { ERB.new(self.source_content, nil, '-').result(binding) }
             when '.html'
-                self.source_content
+                time('html') { self.source_content }
             else
                 raise ArgumentError, "Unsupported format: #{self.source_path}"
             end
