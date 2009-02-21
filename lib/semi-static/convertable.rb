@@ -4,22 +4,25 @@ module SemiStatic
         include Pygmentize
         
         def _content(options={})
-            for name, value in options
-                eval "#{name.to_s} = options[name]"
-            end
+            if @content.nil?
+                for name, value in options
+                    eval "#{name.to_s} = options[name]"
+                end
             
-            case self.source_ext
-            when '.md', '.markdown'
-                time('markdown') { Maruku.new(self.source_content).to_html }
-            when '.haml'
-                time('haml') { Haml::Engine.new(self.source_content).render(binding) }
-            when '.erb'
-                time('erb') { ERB.new(self.source_content, nil, '-').result(binding) }
-            when '.html'
-                time('html') { self.source_content }
-            else
-                raise ArgumentError, "Unsupported format: #{self.source_path}"
+                @content = case self.source_ext
+                when '.md', '.markdown'
+                    time('markdown') { Maruku.new(self.source_content).to_html }
+                when '.haml'
+                    time('haml') { Haml::Engine.new(self.source_content).render(binding) }
+                when '.erb'
+                    time('erb') { ERB.new(self.source_content, nil, '-').result(binding) }
+                when '.html'
+                    time('html') { self.source_content }
+                else
+                    raise ArgumentError, "Unsupported format: #{self.source_path}"
+                end
             end
+            return @content
         end
         
         def content(options={})
