@@ -14,7 +14,7 @@ ignore: nil
    <!-- <email>josh@example.com</email> -->
  </author>
 
-<% for name,post in site.posts -%>
+<% for post in site.posts -%>
  <entry>
    <title><%=h  post.title %></title>
    <link href="http://zzot.github.com<%= post.uri %>"/>

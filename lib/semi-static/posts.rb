@@ -34,16 +34,32 @@ module SemiStatic
             return hash if hash.is_a?(Post)
         end
         
-        def each
+        def each(options={})
             raise ArgumentError, "block required" unless block_given?
-            posts.each do |year,months|
-                months.each do |month,days|
-                    days.each do |day,posts|
-                        posts.each { |post| yield post }
+            limit = options.delete :limit
+            posts.each do |year, months|
+                months.each do |month, days|
+                    days.each do |day, posts|
+                        posts.each do |slug,post|
+                            return unless limit.nil? || limit > 0
+                            yield post
+                            limit -= 1 unless limit.nil?
+                        end
                     end
                 end
             end
         end
+        
+        # def each
+        #     raise ArgumentError, "block required" unless block_given?
+        #     posts.each do |year,months|
+        #         months.each do |month,days|
+        #             days.each do |day,posts|
+        #                 posts.each { |post| yield post }
+        #             end
+        #         end
+        #     end
+        # end
         
         def each_index
             raise ArgumentError, "block required" unless block_given?
@@ -53,7 +69,7 @@ module SemiStatic
                 months.each do |month,days|
                     yield "#{year}/#{month}", days
                     days.each do |day,posts|
-                        yield "#{year}/#{month}/#{day}", posts
+                        yield "#{year}/#{month}/#{day}", posts.values
                     end
                 end
             end

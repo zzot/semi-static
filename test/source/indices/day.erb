@@ -1,7 +1,7 @@
 <h1><%= context.strftime('%B %e, %Y') %></h1>
 
 <ul>
-    <% for name, post in posts -%>
+    <% for post in posts -%>
         <li><a href="<%= post.uri %>"><%= post.title %></a></li>
     <% end -%>
 </ul>
