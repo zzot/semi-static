@@ -8,6 +8,7 @@ module SemiStatic
         attr_accessor :source_dir, :output_dir
         attr_accessor :delete_output_dir
         attr_accessor :server, :server_port
+        attr_accessor :statistics
         
         def self.run
             cli = CLI.new
@@ -24,6 +25,10 @@ module SemiStatic
                 
                 opts.on('-d', '--[no-]delete', 'Delete output dir first') do |d|
                     cli.delete_output_dir = d
+                end
+                
+                opts.on('-t', '--[no-]stats', 'Collect and display some stats.') do |t|
+                    cli.statistics = t
                 end
                 
                 opts.on_tail('-h', '--help', 'Show this message') do
@@ -65,11 +70,14 @@ module SemiStatic
       private
         def generate_site
             SemiStatic::Site.open(source_dir) do |site|
-                site.stats = Hash.new { |hash,key| hash[key] = Array.new }
+                if statistics
+                    site.stats = Hash.new { |hash,key| hash[key] = Array.new }
+                end
                 
                 FileUtils.rm_rf output_dir if delete_output_dir
                 site.output output_dir
                 
+                return unless statistics
                 site.stats.reject { |key,value| key == 'site'}.each do |name,values|
                     sum, min, max = 0, nil, nil
                     values.each do |value|
