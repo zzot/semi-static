@@ -54,7 +54,8 @@ module SemiStatic
                 end
                 
                 unless year_index.nil? && month_index.nil? && day_index.nil?
-                    posts.each_index do |dir, posts|
+                    posts.each_index do |dir|
+                        posts = self.posts.from(dir)
                         Dir.chdir(dir) do
                             context = dir.split('/').collect { |c| c.to_i }
                             date_index = case context.length
@@ -68,7 +69,7 @@ module SemiStatic
                                 nil
                             end
                             date_index.posts = posts
-                            date_index.context = Date.new *context
+                            date_index.context = Time.local *context
                             File.open('index.html', 'w') { |f| f.write date_index.render }
                         end
                     end
@@ -154,6 +155,7 @@ module SemiStatic
             with_source_files('posts', '*.{html,haml,erb,txt,md,markdown}') do |path|
                 posts << path
             end
+            posts.posts.sort! { |l,r| l.created <=> r.created }
         end
         
         def load_snippets

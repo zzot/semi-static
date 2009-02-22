@@ -1,79 +1,87 @@
 module SemiStatic
     class Posts
-        attr_reader :site, :posts, :length
-
+        attr_reader :site, :posts, :names, :indices
+        
         def initialize(site)
             @site = site
-            @posts = Hash.new do |years,year|
-                years[year] = Hash.new do |months,month|
-                    months[month] = Hash.new do |days,day|
-                        days[day] = Hash.new
-                    end
-                end
-            end
-            @length = 0
+            @posts = []
+            @names = {}
+            @indices = Set.new
         end
         
-        def <<(path)
-            file = File.basename(path)
-            if File.file?(path) && file[0..0] != '_'
-                post = Post.new site, path
-                posts[post.year][post.month][post.day][post.slug] = post
-                @length += 1
+        NAME_RE = /^([0-9]{4})-([0-9]{2})-([0-9]{2})-(.*)/
+        
+        def <<(source_path)
+            unless File.file?(source_path)
+                $stderr.puts "[#{source_path}]"
+                return
             end
+            if source_path =~ NAME_RE
+                post = Post.new site, source_path
+                posts.push post
+                names[post.name] = post
+                indices << File.join(post.year, post.month, post.day)
+                indices << File.join(post.year, post.month)
+                indices << post.year
+            else
+                $stderr.puts "{#{source_path}}"
+            end
+        end
+        
+        def length
+            posts.length
+        end
+        
+        def first(n=nil)
+            post.last(n)
+        end
+        
+        def last(n=nil)
+            post.last(n).reverse
+        end
+        
+        def from(year, month=nil, day=nil)
+            if year.is_a?(String) && month.nil? && day.nil?
+                date = year.split('/', 3)
+                year, month, day = date.collect { |c| c.to_i }
+            end
+            
+            if month.nil?
+                from = Time.local year
+                to = Time.local(year + 1) - 1
+            elsif day.nil?
+                from = Time.local year, month
+                if month == 12
+                    to = Time.local(year + 1, 1) - 1
+                else
+                    to = Time.local(year, month + 1) - 1
+                end
+            else
+                from = Time.local year, month, day
+                to = Time.local year, month, day, 23, 59, 59
+            end
+            range = from..to
+            result = posts.select { |p| range.include?(p.created) }
+            class << result
+                alias_method :last_without_reverse, :last
+                def last_with_reverse(n=nil)
+                    last_without_reverse(n).reverse
+                end
+                alias_method :last, :last_with_reverse
+            end
+            return result
         end
         
         def [](name)
-            path = name.split('-', 4)
-            return nil unless path.length == 4
-            
-            hash = posts
-            while hash.is_a?(Hash) && path.length > 0
-                hash = hash[path.shift]
-            end
-            return hash if hash.is_a?(Post)
+            return self.names[name]
         end
         
-        def each(options={})
-            raise ArgumentError, "block required" unless block_given?
-            limit = options.delete :limit
-            posts.each do |year, months|
-                months.each do |month, days|
-                    days.each do |day, posts|
-                        posts.each do |slug,post|
-                            return unless limit.nil? || limit > 0
-                            yield post
-                            limit -= 1 unless limit.nil?
-                        end
-                    end
-                end
-            end
+        def each(&block)
+            posts.each(&block)
         end
         
-        # def each
-        #     raise ArgumentError, "block required" unless block_given?
-        #     posts.each do |year,months|
-        #         months.each do |month,days|
-        #             days.each do |day,posts|
-        #                 posts.each { |post| yield post }
-        #             end
-        #         end
-        #     end
-        # end
-        
-        def each_index
-            raise ArgumentError, "block required" unless block_given?
-            
-            posts.each do |year,months|
-                yield year, months
-                months.each do |month,days|
-                    yield "#{year}/#{month}", days
-                    days.each do |day,posts|
-                        yield "#{year}/#{month}/#{day}", posts.values
-                    end
-                end
-            end
+        def each_index(&block)
+            indices.each(&block)
         end
     end
 end
-

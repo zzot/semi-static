@@ -1,8 +1,10 @@
 <h1><%= context.year %></h1>
-
 <ul>
-    <% for month, days in posts -%>
-        <% date = Date.new context.year, month.to_i -%>
-        <li><a href="<%= date.strftime('/%Y/%m/') %>"><%= date.strftime '%B' %></a></li>
+    <% current = nil -%>
+    <% for post in posts -%>
+        <% if post.month != current -%>
+            <li><a href="<%= post.created.strftime('/%Y/%m/') %>"><%= post.created.strftime '%B' %></a></li>
+            <% current = post.month -%>
+        <% end -%>
     <% end -%>
 </ul>
