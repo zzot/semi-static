@@ -18,7 +18,7 @@ module SemiStatic
             end
             if source_path =~ NAME_RE
                 post = Post.new site, source_path
-                posts.push post
+                self.posts.push post
                 names[post.name] = post
                 indices << File.join(post.year, post.month, post.day)
                 indices << File.join(post.year, post.month)
@@ -29,15 +29,15 @@ module SemiStatic
         end
         
         def length
-            posts.length
+            self.posts.length
         end
         
         def first(n=nil)
-            post.last(n)
+            self.posts.first(n)
         end
         
         def last(n=nil)
-            post.last(n).reverse
+            self.posts.last(n).reverse
         end
         
         def from(year, month=nil, day=nil)
@@ -61,7 +61,7 @@ module SemiStatic
                 to = Time.local year, month, day, 23, 59, 59
             end
             range = from..to
-            result = posts.select { |p| range.include?(p.created) }
+            result = self.posts.select { |p| range.include?(p.created) }
             class << result
                 alias_method :last_without_reverse, :last
                 def last_with_reverse(n=nil)
@@ -77,7 +77,7 @@ module SemiStatic
         end
         
         def each(&block)
-            posts.each(&block)
+            self.posts.each(&block)
         end
         
         def each_index(&block)
