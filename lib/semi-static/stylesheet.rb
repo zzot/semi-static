@@ -13,7 +13,7 @@ module SemiStatic
             
             @content = case source_ext
             when '.sass'
-                Sass::Engine.new(source_content).render
+                Sass::Engine.new(source_content, :filename => source_path).render
             when '.css'
                 source_content
             else

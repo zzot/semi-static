@@ -13,7 +13,7 @@ module SemiStatic
             when '.md', '.markdown'
                 time('markdown') { @content = Maruku.new(self.source_content).to_html }
             when '.haml'
-                time('haml') { Haml::Engine.new(self.source_content).render(binding) }
+                time('haml') { Haml::Engine.new(self.source_content, :filename => source_path).render(binding) }
             when '.erb'
                 time('erb') { ERB.new(self.source_content, nil, '-').result(binding) }
             when '.html'
