@@ -8,18 +8,20 @@ module SemiStatic
             for name, value in options
                 eval "#{name.to_s} = options[name]"
             end
-        
-            case self.source_ext
-            when '.md', '.markdown'
-                time('markdown') { @content = Maruku.new(self.source_content).to_html }
-            when '.haml'
-                time('haml') { Haml::Engine.new(self.source_content, :filename => source_path).render(binding) }
-            when '.erb'
-                time('erb') { ERB.new(self.source_content, nil, '-').result(binding) }
-            when '.html'
-                time('html') { self.source_content }
-            else
-                raise ArgumentError, "Unsupported format: #{self.source_path}"
+
+            site.stats.record(self.class.name.split('::').last, source_path) do
+                case self.source_ext
+                when '.md', '.markdown'
+                    @content = Maruku.new(self.source_content).to_html
+                when '.haml'
+                    Haml::Engine.new(self.source_content, :filename => source_path).render(binding)
+                when '.erb'
+                    ERB.new(self.source_content, nil, '-').result(binding)
+                when '.html'
+                    self.source_content
+                else
+                    raise ArgumentError, "Unsupported format: #{self.source_path}"
+                end
             end
         end
         

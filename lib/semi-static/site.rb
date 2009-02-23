@@ -5,11 +5,12 @@ module SemiStatic
         attr_reader :year_index, :month_index, :day_index
         attr_reader :metadata, :stylesheets
         
-        attr_accessor :stats
+        attr_reader :stats
         
         def initialize(source_dir)
             @source_dir = source_dir
             @time = Time.now
+            @stats = Statistics.new
             load
         end
         
@@ -23,62 +24,61 @@ module SemiStatic
             FileUtils.mkdir_p path
             
             unless metadata.nil? || !metadata['static'].is_a?(Array)
-                before = Time.now
-                for dir in metadata['static']
-                    FileUtils.cp_r File.join(source_dir, dir), File.join(path, dir)
-                end
-                after = Time.now
-                unless self.stats.nil?
-                    time = after - before
-                    self.stats['Static'] << time
+                stats.record(:site, :static) do
+                    for dir in metadata['static']
+                        FileUtils.cp_r File.join(source_dir, dir), File.join(path, dir)
+                    end
                 end
             end
             
             before = Time.now
             Dir.chdir(path) do
-                pages.each do |name, page|
-                    FileUtils.mkdir_p page.output_dir unless File.directory?(page.output_dir)
-                    File.open(page.output_path, 'w') { |f| f.write page.render }
-                end
-
-                posts.each do |post|
-                    FileUtils.mkdir_p post.output_dir unless File.directory?(post.output_dir)
-                    File.open(post.output_path, 'w') { |f| f.write post.render }
-                end
-                
-                unless stylesheets.nil?
-                    stylesheets.each do |name, stylesheet|
-                        FileUtils.mkdir_p stylesheet.output_dir unless File.directory?(stylesheet.output_dir)
-                        File.open(stylesheet.output_path, 'w') { |f| f.write stylesheet.render }
+                stats.record(:site, :pages) do
+                    pages.each do |name, page|
+                        FileUtils.mkdir_p page.output_dir unless File.directory?(page.output_dir)
+                        File.open(page.output_path, 'w') { |f| f.write page.render }
                     end
                 end
                 
-                unless year_index.nil? && month_index.nil? && day_index.nil?
-                    posts.each_index do |dir|
-                        posts = self.posts.from(dir)
-                        Dir.chdir(dir) do
-                            context = dir.split('/').collect { |c| c.to_i }
-                            date_index = case context.length
-                            when 1
-                                year_index
-                            when 2
-                                month_index
-                            when 3
-                                day_index
-                            else
-                                nil
-                            end
-                            date_index.posts = posts
-                            date_index.context = Time.local *context
-                            File.open('index.html', 'w') { |f| f.write date_index.render }
+                stats.record(:site, :posts) do
+                    posts.each do |post|
+                        FileUtils.mkdir_p post.output_dir unless File.directory?(post.output_dir)
+                        File.open(post.output_path, 'w') { |f| f.write post.render }
+                    end
+                end
+                
+                stats.record(:site, :stylesheets) do
+                    unless stylesheets.nil?
+                        stylesheets.each do |name, stylesheet|
+                            FileUtils.mkdir_p stylesheet.output_dir unless File.directory?(stylesheet.output_dir)
+                            File.open(stylesheet.output_path, 'w') { |f| f.write stylesheet.render }
                         end
                     end
                 end
-            end
-            after = Time.now
-            unless self.stats.nil?
-                time = after - before
-                self.stats['Site'] << time
+                
+                stats.record(:site, :indices) do
+                    unless year_index.nil? && month_index.nil? && day_index.nil?
+                        posts.each_index do |dir|
+                            posts = self.posts.from(dir)
+                            Dir.chdir(dir) do
+                                context = dir.split('/').collect { |c| c.to_i }
+                                date_index = case context.length
+                                when 1
+                                    year_index
+                                when 2
+                                    month_index
+                                when 3
+                                    day_index
+                                else
+                                    nil
+                                end
+                                date_index.posts = posts
+                                date_index.context = Time.local *context
+                                File.open('index.html', 'w') { |f| f.write date_index.render }
+                            end
+                        end
+                    end
+                end
             end
         end
         
