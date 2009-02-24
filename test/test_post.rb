@@ -46,7 +46,7 @@ class TestPost < Test::Unit::TestCase
             
             # Test that the metadata was processed correctly
             assert_equal 'Lighting Up', post.title
-            assert_equal 'post', post.layout
+            assert_equal :post, post.layout_name
             assert_equal site.categories['Life'], post.category
             
             assert_render_equal_ref 'test_post/lighting-up.html', post
@@ -67,7 +67,7 @@ class TestPost < Test::Unit::TestCase
             
             # Test that the metadata was processed correctly
             assert_equal 'Impressions', post.title
-            assert_equal 'post', post.layout
+            assert_equal :post, post.layout_name
             assert_equal site.categories['Life'], post.category
             
             assert_render_equal_ref 'test_post/impressions.html', post
@@ -87,7 +87,7 @@ class TestPost < Test::Unit::TestCase
             
             # Test that the metadata was processed correctly
             assert_equal 'The Working Man\'s Typeface', post.title
-            assert_equal 'post', post.layout
+            assert_equal :post, post.layout_name
             assert_equal site.categories['Raves'], post.category
             
             assert_render_equal_ref 'test_post/the-working-mans-typeface.html', post

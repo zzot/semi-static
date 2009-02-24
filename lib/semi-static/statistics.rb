@@ -1,6 +1,10 @@
 module SemiStatic
     class Statistics
         def initialize
+            self.reset
+        end
+        
+        def reset
             @data = Hash.new { |hash,key| hash[key] = Hash.new }
         end
         

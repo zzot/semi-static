@@ -1,5 +1,6 @@
 require 'optparse'
 require 'webrick'
+require 'directory_watcher'
 
 module SemiStatic
     class CLI
@@ -11,6 +12,8 @@ module SemiStatic
         attr_accessor :show_statistics
         attr_accessor :use_pygments
         attr_accessor :quick_mode
+        attr_accessor :check_mtime
+        attr_accessor :start_updater
         
         def self.run
             cli = CLI.new
@@ -23,6 +26,10 @@ module SemiStatic
                         'Start a web server (on port PORT)') do |port|
                     cli.start_server = true
                     cli.server_port = port || 4000
+                end
+                
+                opts.on('-a', '--[no-]auto-update', 'Automatically update generated files') do |a|
+                    cli.start_updater = a
                 end
                 
                 opts.on('-c', '--[no-]clean', 'Clean the output dir first') do |d|
@@ -39,6 +46,10 @@ module SemiStatic
                 
                 opts.on('-q', '--[no-]quick-mode', 'Only convert a few posts (for testing)') do |q|
                     cli.quick_mode = q
+                end
+                
+                opts.on('-m', '--[no-]mtime', 'Skip files that appear to be up-to-date') do |m|
+                    cli.check_mtime = m
                 end
                 
                 opts.on_tail('-h', '--help', 'Show this message') do
@@ -78,8 +89,20 @@ module SemiStatic
                 site.clean_first     = clean_first
                 site.show_statistics = show_statistics
                 site.quick_mode      = quick_mode
+                site.check_mtime     = check_mtime
                 
                 site.output output_dir
+                if start_updater
+                    updater = DirectoryWatcher.new(source_dir)
+                    updater.interval = 1
+                    updater.glob = '{indices,layouts,pages,posts,snippets,stylesheets}/**/*'
+                    updater.add_observer do |*args|
+                        puts "[#{Time.now}] #{args.length} files changed."
+                        site.output output_dir
+                    end
+                    updater.start
+                    sleep 0 unless start_server
+                end
                 if start_server
                     server = HTTPServer.new :DocumentRoot => output_dir,
                                             :Port => server_port

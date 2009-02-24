@@ -2,8 +2,18 @@ module SemiStatic
     module Convertable
         include ERB::Util
         
-        def _content(options={})
+        def load
+            @content = nil
+            if layout
+                layout.load
+            end
+            super
+        end
+        
+        def content(options={})
             return @content unless @content.nil?
+            
+            options = { :page => self }.merge(options)
             for name, value in options
                 eval "#{name.to_s} = options[name]"
             end
@@ -24,16 +34,33 @@ module SemiStatic
             end
         end
         
-        def content(options={})
-            options = { :page => self }.merge(options)
-            return _content(options)
+        def layout_name
+            unless source_metadata.nil? || !source_metadata.include?(:layout)
+                source_metadata[:layout].to_sym
+            end
+        end
+        
+        def layout
+            if layout_name.nil?
+                return nil
+            else
+                return site.layouts[layout_name.to_sym]
+            end
+        end
+        
+        def source_mtime
+            mtime = super
+            if layout && layout.source_mtime > mtime
+                mtime = layout.source_mtime
+            end
+            return mtime
         end
         
         def render(options={})
             content = self.content(options)
-            unless !@metadata.include?(:layout) || self.layout.nil?
-                page = options.include?(:page) ? options[:page] : self
-                content = site.layouts[layout.to_sym].render(options.merge(:page => page, :content => content))
+            if layout
+                options = { :page => self }.merge options
+                content = layout.render(options.merge( :content => content ))
             end
             return content
         end

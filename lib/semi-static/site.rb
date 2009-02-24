@@ -1,6 +1,6 @@
 module SemiStatic
     class Site
-        attr_accessor :clean_first, :quick_mode, :show_statistics
+        attr_accessor :clean_first, :check_mtime, :quick_mode, :show_statistics
         
         attr_reader :time
         attr_reader :source_dir, :layouts, :pages, :posts, :snippets, :categories, :tags
@@ -12,6 +12,7 @@ module SemiStatic
         def initialize(source_dir)
             @clean_first = false
             @quick_mode = false
+            @check_mtime = false
             @show_statistics = false
             @source_dir = source_dir
             @time = Time.now
@@ -32,6 +33,7 @@ module SemiStatic
             if quick_mode
                 posts.chop! 20
             end
+            @stats.reset
             
             unless metadata.nil? || !metadata['static'].is_a?(Array)
                 stats.record(:site, :static) do
@@ -46,6 +48,12 @@ module SemiStatic
                 stats.record(:site, :pages) do
                     pages.each do |name, page|
                         FileUtils.mkdir_p page.output_dir unless File.directory?(page.output_dir)
+                        if check_mtime
+                            if File.file?(page.output_path) && File.mtime(page.output_path) > page.source_mtime
+                                next
+                            end
+                            page.load
+                        end
                         File.open(page.output_path, 'w') { |f| f.write page.render }
                     end
                 end
@@ -53,6 +61,12 @@ module SemiStatic
                 stats.record(:site, :posts) do
                     posts.each do |post|
                         FileUtils.mkdir_p post.output_dir unless File.directory?(post.output_dir)
+                        if check_mtime
+                            if File.file?(post.output_path) && File.mtime(post.output_path) > post.source_mtime
+                                next
+                            end
+                            post.load
+                        end
                         File.open(post.output_path, 'w') { |f| f.write post.render }
                     end
                 end
@@ -61,6 +75,12 @@ module SemiStatic
                     unless stylesheets.nil?
                         stylesheets.each do |name, stylesheet|
                             FileUtils.mkdir_p stylesheet.output_dir unless File.directory?(stylesheet.output_dir)
+                            if check_mtime
+                                if File.file?(stylesheet.output_path) && File.mtime(stylesheet.output_path) > stylesheet.source_mtime
+                                    next
+                                end
+                                stylesheet.load
+                            end
                             File.open(stylesheet.output_path, 'w') { |f| f.write stylesheet.render }
                         end
                     end

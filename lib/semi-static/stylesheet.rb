@@ -10,14 +10,19 @@ module SemiStatic
             @name, @options = name, options
             @output_dir = 'css'
             @output_path = "#{output_dir}/#{name}.css"
-            
-            @content = case source_ext
-            when '.sass'
-                Sass::Engine.new(source_content, :filename => source_path).render
-            when '.css'
-                source_content
-            else
-                raise ArgumentError, "Unsupported format: #{self.source_path}"
+        end
+        
+        def load
+            super
+            Dir.chdir(File.dirname(full_source_path)) do
+                @content = case source_ext
+                when '.sass'
+                    Sass::Engine.new(source_content, :filename => source_path).render
+                when '.css'
+                    source_content
+                else
+                    raise ArgumentError, "Unsupported format: #{self.source_path}"
+                end
             end
         end
         
