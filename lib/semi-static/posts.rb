@@ -28,6 +28,21 @@ module SemiStatic
             end
         end
         
+        def chop!(count)
+            raise ArgumentError unless count > 0
+            posts = self.posts.first(count)
+            @posts = []
+            @names = {}
+            @indices = Set.new
+            for post in posts
+                self.posts << post
+                names[post.name] = post
+                indices << File.join(post.year, post.month, post.day)
+                indices << File.join(post.year, post.month)
+                indices << post.year
+            end
+        end
+        
         def length
             self.posts.length
         end

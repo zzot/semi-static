@@ -10,6 +10,7 @@ module SemiStatic
         attr_accessor :start_server, :server_port
         attr_accessor :show_statistics
         attr_accessor :use_pygments
+        attr_accessor :quick_mode
         
         def self.run
             cli = CLI.new
@@ -34,6 +35,10 @@ module SemiStatic
                 
                 opts.on('-p', '--[no-]pygments', 'Use Pygments for code highlighting') do |p|
                     cli.use_pygments = p
+                end
+                
+                opts.on('-q', '--[no-]quick-mode', 'Only convert a few posts (for testing)') do |q|
+                    cli.quick_mode = q
                 end
                 
                 opts.on_tail('-h', '--help', 'Show this message') do
@@ -72,6 +77,7 @@ module SemiStatic
             SemiStatic::Site.open(source_dir) do |site|
                 site.clean_first     = clean_first
                 site.show_statistics = show_statistics
+                site.quick_mode      = quick_mode
                 
                 site.output output_dir
                 if start_server

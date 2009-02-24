@@ -1,6 +1,6 @@
 module SemiStatic
     class Site
-        attr_accessor :clean_first, :show_statistics
+        attr_accessor :clean_first, :quick_mode, :show_statistics
         
         attr_reader :time
         attr_reader :source_dir, :layouts, :pages, :posts, :snippets, :categories, :tags
@@ -11,11 +11,12 @@ module SemiStatic
         
         def initialize(source_dir)
             @clean_first = false
+            @quick_mode = false
             @show_statistics = false
             @source_dir = source_dir
             @time = Time.now
             @stats = Statistics.new
-            load
+            stats.record(:site, :load) { load }
         end
         
         def self.open(source_dir)
@@ -27,6 +28,10 @@ module SemiStatic
         def output(path)
             FileUtils.rm_rf path if clean_first
             FileUtils.mkdir_p path
+            
+            if quick_mode
+                posts.chop! 20
+            end
             
             unless metadata.nil? || !metadata['static'].is_a?(Array)
                 stats.record(:site, :static) do
