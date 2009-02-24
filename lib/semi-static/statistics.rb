@@ -13,7 +13,7 @@ module SemiStatic
         end
         
         def display
-            details = {}
+            # details = {}
             @data.each do |category,items|
                 next if category == :site
                 sum = 0; items.values.each { |time| sum += time }
@@ -23,16 +23,19 @@ module SemiStatic
                     printf "%10s c:%-3d sum:%9.6f min:%.6f max:%.6f avg:%.6f\n",
                            category, items.length, sum, list.first.last,
                            list.last.last, sum / items.length
-                    details[category] = list.collect { |pair| { pair.first => pair.last } }
+                    # details[category] = list.reverse.first(5).collect { |pair| { pair.first => pair.last } }
                 else
                     printf "%10s c:%-3d sum:%9.6f\n", category, items.length, sum
                 end
             end
+            puts '---'
+            @data[:site].each { |cat,time| printf "%15s %9.6f\n", cat.to_s.capitalize, time }
             
-            unless details.empty?
-                puts
-                puts details.to_yaml
-            end
+            # unless details.empty?
+            #     puts '---'
+            #     puts
+            #     puts details.to_yaml
+            # end
         end
     end
 end
