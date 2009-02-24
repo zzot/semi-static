@@ -2,11 +2,11 @@
 
 %html{ html_attrs }
   %head
-    %meta{ content_type_attrs }
+    %meta{ 'http-equiv' => 'Content-type', :content => 'text/html; charset=utf-8' }
     %title= page.title
     %meta{ :name => 'author', :content => 'Josh Dady' }
   
-  %body{ body_attrs }
+  %body
     #site
       #header
         %h1.title

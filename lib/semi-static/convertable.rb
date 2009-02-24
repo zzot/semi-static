@@ -39,14 +39,6 @@ module SemiStatic
             return content
         end
         
-        def content_type_attrs
-            { 'http-equiv' => 'Content-type', :content => 'text/html; charset=utf-8' }
-        end
-        
-        def body_attrs
-            {}
-        end
-        
         def snippet(name)
             name = name.to_s
             site.snippets[name].render :page => self
