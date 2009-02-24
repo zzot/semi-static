@@ -6,9 +6,9 @@ module SemiStatic
         include WEBrick
         
         attr_accessor :source_dir, :output_dir
-        attr_accessor :delete_output_dir
-        attr_accessor :server, :server_port
-        attr_accessor :statistics
+        attr_accessor :clean_first
+        attr_accessor :start_server, :server_port
+        attr_accessor :show_statistics
         
         def self.run
             cli = CLI.new
@@ -19,16 +19,16 @@ module SemiStatic
                 
                 opts.on('-s', '--server [PORT]', Integer,
                         'Start a web server (on port PORT)') do |port|
-                    cli.server = true
+                    cli.start_server = true
                     cli.server_port = port || 4000
                 end
                 
-                opts.on('-d', '--[no-]delete', 'Delete output dir first') do |d|
-                    cli.delete_output_dir = d
+                opts.on('-c', '--[no-]clean', 'Clean the output dir first') do |d|
+                    cli.clean_first = d
                 end
                 
-                opts.on('-t', '--[no-]stats', 'Collect and display some stats.') do |t|
-                    cli.statistics = t
+                opts.on('-t', '--[no-]stats', 'Display conversion statistics') do |t|
+                    cli.show_statistics = t
                 end
                 
                 opts.on_tail('-h', '--help', 'Show this message') do
@@ -63,30 +63,18 @@ module SemiStatic
         end
         
         def run
-            generate_site
-            start_server
-        end
-        
-      private
-        def generate_site
             SemiStatic::Site.open(source_dir) do |site|
-                FileUtils.rm_rf output_dir if delete_output_dir
-                site.output output_dir
+                site.clean_first     = clean_first
+                site.show_statistics = show_statistics
                 
-                site.stats.display if statistics
-            end
-        end
-        
-        # This function, short as it may be, is basically lifted from the
-        # equivalent module inside Jekyll.
-        def start_server
-            if server
-                s = HTTPServer.new :DocumentRoot => output_dir,
-                                   :Port => server_port
-                t = Thread.new { s.start }
-            
-                trap('INT') { s.shutdown }
-                t.join
+                site.output output_dir
+                if start_server
+                    server = HTTPServer.new :DocumentRoot => output_dir,
+                                            :Port => server_port
+                    thread = Thread.new { server.start }
+                    trap('INT') { server.shutdown }
+                    thread.join
+                end
             end
         end
     end

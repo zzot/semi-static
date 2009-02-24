@@ -1,5 +1,7 @@
 module SemiStatic
     class Site
+        attr_accessor :clean_first, :show_statistics
+        
         attr_reader :time
         attr_reader :source_dir, :layouts, :pages, :posts, :snippets, :categories, :tags
         attr_reader :year_index, :month_index, :day_index
@@ -8,6 +10,8 @@ module SemiStatic
         attr_reader :stats
         
         def initialize(source_dir)
+            @clean_first = false
+            @show_statistics = false
             @source_dir = source_dir
             @time = Time.now
             @stats = Statistics.new
@@ -21,6 +25,7 @@ module SemiStatic
         end
         
         def output(path)
+            FileUtils.rm_rf path if clean_first
             FileUtils.mkdir_p path
             
             unless metadata.nil? || !metadata['static'].is_a?(Array)
@@ -80,6 +85,8 @@ module SemiStatic
                     end
                 end
             end
+            
+            self.stats.display if show_statistics
         end
         
       private
