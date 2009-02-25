@@ -33,5 +33,42 @@ module SemiStatic
         def names
             values.collect { |c| c.name }.sort { |l,r| l.to_s <=> r.to_s }
         end
+        
+        def nested_values
+            result = Hash.new { |hash,key| hash[key] = Hash.new }
+            values.each do |item|
+                parent, child = item.slug.to_s.split '/'
+                if child.nil?
+                    result[parent.to_sym][nil] = item
+                else
+                    result[parent.to_sym][child.to_sym] = item
+                end
+            end
+            
+            result.collect do |parent_slug,items|
+                parent = items.delete(nil)
+                children = items.values.sort { |l,r| l.name.casecmp r.name }
+                
+                class << parent
+                    attr_accessor :slug, :children
+                end
+                parent.children = children
+                parent
+            end.sort { |l,r| l.name.casecmp r.name }
+        end
+        
+        def each(options={}, &block)
+            list = case options[:order]
+            when :name, nil
+                values.sort { |l,r| l.name.casecmp r.name }
+            when :count
+                values.sort { |l,r| r.count <=> l.count }
+            when :tree
+                nested_values
+            else
+                raise ArgumentError, "Unknown order: #{options[:order]}"
+            end
+            list.each(&block)
+        end
     end
 end
