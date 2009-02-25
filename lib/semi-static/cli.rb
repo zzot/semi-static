@@ -15,6 +15,16 @@ module SemiStatic
         attr_accessor :check_mtime
         attr_accessor :start_updater
         
+        def initialize
+            self.clean_first     = false
+            self.start_server    = false
+            self.show_statistics = false
+            self.use_pygments    = true
+            self.quick_mode      = false
+            self.check_mtime     = true
+            self.start_updater   = false
+        end
+        
         def self.run
             cli = CLI.new
             opts = OptionParser.new do |opts|
