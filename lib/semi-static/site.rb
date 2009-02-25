@@ -11,6 +11,7 @@ module SemiStatic
         
         def initialize(source_dir)
             @clean_first = false
+            @first_pass = true
             @quick_mode = false
             @check_mtime = false
             @show_statistics = false
@@ -27,7 +28,10 @@ module SemiStatic
         end
         
         def output(path)
-            FileUtils.rm_rf path if clean_first
+            if @first_pass
+                @first_pass = false
+                FileUtils.rm_rf path if clean_first
+            end
             FileUtils.mkdir_p path
             
             if quick_mode
