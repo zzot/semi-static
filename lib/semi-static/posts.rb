@@ -48,11 +48,19 @@ module SemiStatic
         end
         
         def first(n=nil)
-            self.posts.first(n)
+            if n.nil?
+                self.posts.first
+            else
+                self.posts.first(n)
+            end
         end
         
         def last(n=nil)
-            self.posts.last(n).reverse
+            if n.nil?
+                self.posts.last
+            else
+                self.posts.last(n).reverse
+            end
         end
         
         def from(year, month=nil, day=nil)
