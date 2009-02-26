@@ -7,7 +7,7 @@ if RUBY_VERSION.to_f < 1.9
     begin
         require 'jeweler'
         Jeweler::Tasks.new do |s|
-            s.name        = 'zzot-semi-static'
+            s.name        = 'semi-static'
             s.summary     = 'Semi-Static is yet another static site generator.'
             s.email       = 'projects@zzot.net'
             s.homepage    = 'http://github.com/zzot/semi-static'
