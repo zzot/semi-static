@@ -32,21 +32,23 @@ module SemiStatic
     end
 end
 
-module MaRuKu
-    module Out::HTML
-        alias_method :to_html_code_without_pygments, :to_html_code
-        def to_html_code_with_pygments
-            if SemiStatic::Pygmentize.enabled
-                source = self.raw_code
-                lang = self.attributes[:lang] || 'text'
-                html = SemiStatic::Pygmentize.pygmentize source, lang
-                doc = Document.new html, :respect_whitespace => :all
+module MaRuKu #:nodoc:
+    module Out #:nodoc:
+        module HTML #:nodoc:
+            alias_method :to_html_code_without_pygments, :to_html_code
+            def to_html_code_with_pygments
+                if SemiStatic::Pygmentize.enabled
+                    source = self.raw_code
+                    lang = self.attributes[:lang] || 'text'
+                    html = SemiStatic::Pygmentize.pygmentize source, lang
+                    doc = Document.new html, :respect_whitespace => :all
 
-                add_ws doc.root
-            else
-                to_html_code_without_pygments
+                    add_ws doc.root
+                else
+                    to_html_code_without_pygments
+                end
             end
+            alias_method :to_html_code, :to_html_code_with_pygments
         end
-        alias_method :to_html_code, :to_html_code_with_pygments
     end
 end

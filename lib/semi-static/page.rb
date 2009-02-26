@@ -1,9 +1,32 @@
 module SemiStatic
+    # Page represents a static page in the site.  Page itself only
+    # represents a single source file, but can have a Layout and any number
+    # of Snippets, each of which has its own source file.  Page's modification
+    # time is the most recent of itself, its layout, and any Snippets used.
     class Page < Base
         include Convertable
         
-        attr_reader :output_dir, :output_path, :name, :uri
+        ##
+        # The Page's output directory
+        attr_reader :output_dir
+
+        ##
+        # The Page's output path
+        attr_reader :output_path
+
+        ##
+        # The Page's name
+        attr_reader :name
+
+        ##
+        # The Page's URI
+        attr_reader :uri
         
+        ##
+        # Initializes a new Page
+        #
+        # +site+:: The Site object we belong to
+        # +path+:: The relative path to the source file
         def initialize(site, path)
             super
             @metadata = [ :title, :layout ]
