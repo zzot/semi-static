@@ -1,8 +1,10 @@
 module SemiStatic
+    ##
+    # Support conversion of the source file into another format.
     module Convertable
         include ERB::Util
         
-        def load
+        def load #:nodoc:
             @content = nil
             if layout
                 layout.load
@@ -10,6 +12,8 @@ module SemiStatic
             super
         end
         
+        ##
+        # Format the source file.
         def content(options={})
             return @content unless @content.nil?
             
@@ -34,13 +38,13 @@ module SemiStatic
             end
         end
         
-        def layout_name
+        def layout_name #:nodoc:
             unless source_metadata.nil? || !source_metadata.include?(:layout)
                 source_metadata[:layout].to_sym
             end
         end
         
-        def layout
+        def layout #:nodoc:
             if layout_name.nil?
                 return nil
             else
@@ -48,6 +52,9 @@ module SemiStatic
             end
         end
         
+        ##
+        # Add the layout used (if any) to the list of files used to determine
+        # the objects modification time.
         def source_mtime
             mtime = super
             if layout && layout.source_mtime > mtime
@@ -56,6 +63,8 @@ module SemiStatic
             return mtime
         end
         
+        ##
+        # Wrap the formatted source file in the Layout (if any).
         def render(options={})
             content = self.content(options)
             if layout
@@ -65,6 +74,8 @@ module SemiStatic
             return content
         end
         
+        ##
+        # Helper method used to insert a Snippet into the formatted output.
         def snippet(name)
             name = name.to_s
             site.snippets[name].render :page => self
@@ -73,7 +84,7 @@ module SemiStatic
         # This method is adapted from Haml::Buffer#parse_object_ref -- it's
         # used to make it easier for Haml and ERB layouts to generate the
         # same output so I can use the same test output for both.
-        def object_ref(object)
+        def object_ref(object) #:nodoc:
             return '' if object.nil?
             name = underscore(object.class)
             id = "#{name}_#{object.id || 'new'}"
@@ -83,7 +94,7 @@ module SemiStatic
         # Changes a word from camel case to underscores.  Based on the method
         # of the same name in Rails' Inflector, but copied here so it'll run
         # properly without Rails.
-        def underscore(camel_cased_word)
+        def underscore(camel_cased_word) #:nodoc:
             camel_cased_word.to_s.gsub(/::/, '_').
             gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
             gsub(/([a-z\d])([A-Z])/,'\1_\2').

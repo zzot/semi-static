@@ -1,8 +1,7 @@
 module SemiStatic
-    # Base represents a single source file and its associated metadata.
-    # Base loads the source file, and strips and parses any metadata set
-    # in the file's header.  It stores an absolute path to the file so we
-    # can refer to it later.
+    # Base is a single source file and its associated metadata.  Base loads
+    # itself from the source file and strips off and parses the metadata in
+    # the file's header.
     class Base
         ##
         # The associated Site object

@@ -1,13 +1,24 @@
 module SemiStatic
+    ##
+    # Used to track statistics while generating the Site.
     class Statistics
+        ##
+        # Initialize a new Statistics object.
         def initialize
             self.reset
         end
         
+        ##
+        # Clears all recorded data.
         def reset
             @data = Hash.new { |hash,key| hash[key] = Hash.new }
         end
         
+        ##
+        # Record the time it takes for the block to execute.
+        #
+        # +category+: The category of the action.
+        # +item+:     The name of the action.
         def record(category, item)
             raise ArgumentError unless block_given?
             before = Time.now
@@ -16,6 +27,8 @@ module SemiStatic
             return result
         end
         
+        ##
+        # Display the collected data to the user.
         def display
             # details = {}
             @data.each do |category,items|

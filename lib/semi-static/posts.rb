@@ -1,7 +1,27 @@
 module SemiStatic
+    ##
+    # Collection of Posts for the current site.
     class Posts
-        attr_reader :site, :posts, :names, :indices
+        ##
+        # The Site object we belong to.
+        attr_reader :site
         
+        ##
+        # The raw list of posts.
+        attr_reader :posts
+        
+        ##
+        # Posts indexed by name.
+        attr_reader :names
+        
+        ##
+        # Indices that correspond to the Posts.
+        attr_reader :indices
+        
+        ##
+        # Initializes a new Posts
+        #
+        # +site+: The Site we belong to.
         def initialize(site)
             @site = site
             @posts = []
@@ -9,8 +29,14 @@ module SemiStatic
             @indices = Set.new
         end
         
+        ##
+        # The format of the Date portion of a post's filename.
         NAME_RE = /^([0-9]{4})-([0-9]{2})-([0-9]{2})-(.*)/
         
+        ##
+        # Parse the given file as a Post and add it to the list.
+        #
+        # +source_path+: Path to the source file
         def <<(source_path)
             unless File.file?(source_path)
                 $stderr.puts "[#{source_path}]"
@@ -28,6 +54,10 @@ module SemiStatic
             end
         end
         
+        ##
+        # Truncate the list of Posts to the given number (to speed up testing).
+        #
+        # +count+: The number of posts to keep.
         def chop!(count)
             raise ArgumentError unless count > 0
             posts = self.posts.first(count)
@@ -43,10 +73,16 @@ module SemiStatic
             end
         end
         
+        ##
+        # Number of posts.
         def length
             self.posts.length
         end
         
+        ##
+        # Fetch the least recent posts.
+        #
+        # +n+: Number of Posts to return.
         def first(n=nil)
             if n.nil?
                 self.posts.first
@@ -55,6 +91,10 @@ module SemiStatic
             end
         end
         
+        ##
+        # Fetch the most recent posts.
+        #
+        # +n+: Number of Posts to return.
         def last(n=nil)
             if n.nil?
                 self.posts.last
@@ -63,6 +103,8 @@ module SemiStatic
             end
         end
         
+        ##
+        # Fetch the Posts for the given Date range.
         def from(year, month=nil, day=nil)
             if year.is_a?(String) && month.nil? && day.nil?
                 date = year.split('/', 3)
@@ -95,15 +137,21 @@ module SemiStatic
             return result
         end
         
+        ##
+        # Get the post with the given name.
         def [](name)
             return self.names[name]
         end
         
-        def each(&block)
+        ##
+        # Iterate over all posts.
+        def each(&block) # :yields: Post
             self.posts.each(&block)
         end
         
-        def each_index(&block)
+        ##
+        # Iterate over all indices.
+        def each_index(&block) # :yields: String
             indices.each(&block)
         end
     end

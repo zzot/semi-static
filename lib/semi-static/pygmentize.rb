@@ -1,11 +1,18 @@
 module SemiStatic
     module Pygmentize
+        ##
+        # Format of a valid lexer name
         LEXER_FORMAT = /^[a-z]+$/i
         
-        def pygmentize(code, lang)
+        def pygmentize(code, lang) #:nodoc:
             Pygmentize.pygmentize code, lang
         end
-
+        
+        ##
+        # Highlight the given code with the given lexer.
+        #
+        # +code+: The code to highlight.
+        # +lang+: The lexer to use.
         def self.pygmentize(code, lang)
             unless lang =~ LEXER_FORMAT
                 raise ArgumentError, "invalid lexer: #{lang}"
@@ -23,10 +30,10 @@ module SemiStatic
         end
         
         @@enabled = false
-        def self.enabled
+        def self.enabled #:nodoc:
             @@enabled
         end
-        def self.enabled=(value)
+        def self.enabled=(value) #:nodoc:
             @@enabled = value
         end
     end
