@@ -32,4 +32,5 @@ Rake::RDocTask.new do |r|
     r.title    = 'semi-static'
     r.options << '--line-numbers' << '--inline-source'
     r.rdoc_files.include 'README*', 'lib/**/*.rb'
+    r.rdoc_dir = 'doc'
 end
