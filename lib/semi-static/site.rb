@@ -65,6 +65,10 @@ module SemiStatic
         attr_reader :source_dir
         
         ##
+        # Time the output was generated.
+        attr_reader :time
+        
+        ##
         # Initializes a new Site with the given source directory.
         def initialize(source_dir)
             @clean_first = false
