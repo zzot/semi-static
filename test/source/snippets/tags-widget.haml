@@ -3,5 +3,4 @@
   %ul.content
     - site.tags.each do |tag|
       %li
-        %a{ :href => "/tags/#{tag.slug}/" }
-          = "#{tag.name} (#{tag.length})"
+        %a{ :href => tag.uri }= "#{tag.name} (#{tag.length})"

@@ -12,12 +12,16 @@ module SemiStatic
         attr_reader :slug
         
         ##
+        # URI for the tag's index page.
+        attr_reader :uri
+        
+        ##
         # Initializes a new Tag
-        #
-        # +name+: The Tag's name
-        # +slug+: The Tag's slug
-        def initialize(name, slug)
-            @name, @slug = name, slug
+        def initialize(owner, name)
+            super()
+            @name = name
+            @slug = Tags.slugize name
+            @uri = "#{owner.uri}#{slug}/"
         end
     end
     
@@ -25,9 +29,21 @@ module SemiStatic
     # A list of all tag in the site.
     class Tags < Hash
         ##
+        # The URI for the collection's index page.
+        attr_reader :uri
+        
+        ##
         # Convert the given display name to a URL-ified one.
         def self.slugize(name)
             name.to_s.gsub(/ /, '-').downcase.to_sym
+        end
+        
+        ##
+        # Initializes a new collection with the given name
+        def initialize(slug)
+            super()
+            @slug = slug
+            @uri = "/#{slug}/"
         end
         
         ##
@@ -38,7 +54,7 @@ module SemiStatic
             slug = Tags.slugize name
             tag = super(slug)
             if tag.nil?
-                tag = Tag.new name.to_s, slug
+                tag = Tag.new self, name
                 self[slug] = tag
             end
             return tag

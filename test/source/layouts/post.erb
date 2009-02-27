@@ -15,7 +15,7 @@ layout: default
         <span class='date'><%= page.date %></span>
         <% unless page.tags.empty? %>
             in
-            <%= page.tags.collect { |t| t.name }.join ', ' %>
+            <%= page.tags.collect { |t| "<a href='#{t.uri}'>#{t.name}</a>" }.join ', ' %>
         <% end %>
         <% if page.time? %>
             at
