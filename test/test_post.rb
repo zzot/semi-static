@@ -13,21 +13,12 @@ class TestPost < Test::Unit::TestCase
         end
     end
     
-    def test_post_categories
-        with_test_site do |site|
-            assert_not_nil site
-            assert_not_nil site.categories
-            assert_equal [ :applescript, :life, :raves ], site.categories.slugs
-            assert_equal [ 'AppleScript', 'Life', 'Raves' ], site.categories.names
-        end
-    end
-    
     def test_post_tags
         with_test_site do |site|
             assert_not_nil site
             assert_not_nil site.tags
-            assert_equal [ :'auto-show', :'catching-up', :'colbert-report',
-                           :'comedy-central', :iphone, :rss, :travel,
+            assert_equal [ :applescript, :'auto-show', :'catching-up', :'colbert-report',
+                           :'comedy-central', :iphone, :raves, :rss, :travel,
                            :typography, :work ],
                          site.tags.slugs
         end
@@ -47,7 +38,13 @@ class TestPost < Test::Unit::TestCase
             # Test that the metadata was processed correctly
             assert_equal 'Lighting Up', post.title
             assert_equal :post, post.layout_name
-            assert_equal site.categories['Life'], post.category
+            
+            assert post.tags.include? site.tags[:'auto-show']
+            assert post.tags.include? site.tags[:'catching-up']
+            assert post.tags.include? site.tags[:iphone]
+            assert post.tags.include? site.tags[:rss]
+            assert post.tags.include? site.tags[:travel]
+            assert post.tags.include? site.tags[:work]
             
             assert_render_equal_ref 'test_post/lighting-up.html', post
         end
@@ -68,7 +65,9 @@ class TestPost < Test::Unit::TestCase
             # Test that the metadata was processed correctly
             assert_equal 'Impressions', post.title
             assert_equal :post, post.layout_name
-            assert_equal site.categories['Life'], post.category
+            
+            assert post.tags.include? site.tags[:'catching-up']
+            assert post.tags.include? site.tags[:rss]
             
             assert_render_equal_ref 'test_post/impressions.html', post
         end
@@ -88,7 +87,11 @@ class TestPost < Test::Unit::TestCase
             # Test that the metadata was processed correctly
             assert_equal 'The Working Man\'s Typeface', post.title
             assert_equal :post, post.layout_name
-            assert_equal site.categories['Raves'], post.category
+            
+            assert post.tags.include? site.tags[:'colbert-report']
+            assert post.tags.include? site.tags[:'comedy-central']
+            assert post.tags.include? site.tags[:raves]
+            assert post.tags.include? site.tags[:typography]
             
             assert_render_equal_ref 'test_post/the-working-mans-typeface.html', post
         end

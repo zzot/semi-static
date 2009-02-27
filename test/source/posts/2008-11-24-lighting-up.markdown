@@ -1,7 +1,6 @@
 ---
 title: Lighting Up
 layout: post
-category: Life
 author: Josh Dady
 tags:
 - Travel

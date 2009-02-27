@@ -11,10 +11,6 @@ module SemiStatic
         attr_reader :name
         
         ##
-        # The Post's Category
-        attr_reader :category
-        
-        ##
         # The Post's Tags
         attr_reader :tags
         
@@ -56,9 +52,6 @@ module SemiStatic
             @metadata = [ :title, :layout, :author ]
             
             @name = File.basename(source_path, source_ext)
-            
-            @category = site.categories[source_metadata[:category]]
-            @category << self
             
             @tags = []
             unless source_metadata[:tags].nil?

@@ -25,7 +25,7 @@ require 'semi-static/post'
 require 'semi-static/snippet'
 require 'semi-static/posts'
 require 'semi-static/index'
-require 'semi-static/categories'
+require 'semi-static/tags'
 require 'semi-static/statistics'
 require 'semi-static/site'
 

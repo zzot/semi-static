@@ -5,7 +5,8 @@ time: 22:51:28
 utc-date: 2005-03-28 03:51:28
 layout: post
 author: Josh Dady
-category: AppleScript
+tags:
+- AppleScript
 ---
 
 I found it, but I still don't have a clue as to why I wrote it to begin with:

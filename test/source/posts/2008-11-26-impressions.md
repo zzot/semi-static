@@ -1,7 +1,6 @@
 ---
 title: Impressions
 layout: post
-category: Life
 author: Josh Dady
 tags:
 - RSS

@@ -37,8 +37,8 @@ module SemiStatic
         attr_reader :stylesheets
         
         ##
-        # Categories collection over the site's posts.
-        attr_reader :categories, :tags
+        # List of all Tags in the site.
+        attr_reader :tags
         
         ##
         # Index used to generate the year indices in the output site.
@@ -252,8 +252,7 @@ module SemiStatic
         
         def load_posts
             @posts = Posts.new(self)
-            @categories = Categories.new
-            @tags = Categories.new
+            @tags = Tags.new
             with_source_files('posts', '*.{html,haml,erb,txt,md,markdown}') do |path|
                 posts << path
             end
