@@ -1,14 +1,71 @@
 module SemiStatic
     class Site
-        attr_accessor :clean_first, :check_mtime, :quick_mode, :show_statistics
+        ##
+        # Clean the output directory before generating the site.
+        attr_accessor :clean_first
         
-        attr_reader :time
-        attr_reader :source_dir, :layouts, :pages, :posts, :snippets, :categories, :tags
-        attr_reader :year_index, :month_index, :day_index
-        attr_reader :metadata, :stylesheets
+        ##
+        # Only generate a file if its source files are newer than its output file.
+        attr_accessor :check_mtime
         
+        ##
+        # Only process a few posts, to speed up template editing.
+        attr_accessor :quick_mode
+        
+        ##
+        # Show conversion stats after outputting the site.
+        attr_accessor :show_statistics
+        
+        ##
+        # List of every Layout in the site.
+        attr_reader :layouts
+        
+        ##
+        # List of every Page in the site.
+        attr_reader :pages
+        
+        ##
+        # List of every Post in the site.
+        attr_reader :posts
+        
+        ##
+        # List of every Snippet in the site.
+        attr_reader :snippets
+        
+        ##
+        # List of every Stylesheet in the site.
+        attr_reader :stylesheets
+        
+        ##
+        # Categories collection over the site's posts.
+        attr_reader :categories, :tags
+        
+        ##
+        # Index used to generate the year indices in the output site.
+        attr_reader :year_index
+        
+        ##
+        # Index used to generate the month indices in the output site.
+        attr_reader :month_index
+        
+        ##
+        # Index used to generate the day indices in the output site.
+        attr_reader :day_index
+        
+        ##
+        # Site configuration.
+        attr_reader :metadata
+        
+        ##
+        # Statistics for the conversion process.
         attr_reader :stats
         
+        ##
+        # Site source directory.
+        attr_reader :source_dir
+        
+        ##
+        # Initializes a new Site with the given source directory.
         def initialize(source_dir)
             @clean_first = false
             @first_pass = true
@@ -21,12 +78,17 @@ module SemiStatic
             stats.record(:site, :load) { load }
         end
         
+        ##
+        # Creates a Site with the given source directory and yields it to the
+        # given block.
         def self.open(source_dir)
             raise ArugmentError, "block required" unless block_given?
             site = SemiStatic::Site.new source_dir
             yield site
         end
         
+        ##
+        # Write the Site to the given output directory.
         def output(path)
             if @first_pass
                 @first_pass = false
