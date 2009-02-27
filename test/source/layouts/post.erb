@@ -13,9 +13,13 @@ layout: default
         <span class='author'><%= page.author %></span>
         on
         <span class='date'><%= page.date %></span>
+        <% unless page.tags.empty? %>
+            in
+            <%= page.tags.collect { |t| t.name }.join ', ' %>
+        <% end %>
         <% if page.time? %>
-        at
-        <span class='time'><%= page.time %></span>
+            at
+            <span class='time'><%= page.time %></span>
         <% end %>
       </li>
       <li class='link'>

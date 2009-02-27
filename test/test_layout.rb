@@ -35,6 +35,7 @@ class TestLayout < Test::Unit::TestCase
         def date; "January 13, 2009"; end
         def time?; true; end
         def time; "11:52 AM"; end
+        def tags; []; end
         def comments_link; "#{permalink}##comments"; end
         def comment_count; 0; end
     end
