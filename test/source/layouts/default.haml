@@ -18,7 +18,10 @@
             %a{ :href => '/about.html' } About
           %li.nav-colophon
             %a{ :href => '/colophon.html' } Colophon
-      #body~ content
+      #body
+        #content.column~ content
+        #sidebar.column
+          = snippet 'tags-widget'
       #footer
         %p
           Copyright © 2003–2009 Josh Dady.

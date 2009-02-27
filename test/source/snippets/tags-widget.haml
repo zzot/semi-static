@@ -1,0 +1,7 @@
+#tags.widget
+  %h3.header Tags
+  %ul.content
+    - site.tags.each do |tag|
+      %li
+        %a{ :href => "/tags/#{tag.slug}/" }
+          = "#{tag.name} (#{tag.length})"
