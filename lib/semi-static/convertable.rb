@@ -29,7 +29,9 @@ module SemiStatic
                 when '.haml'
                     Haml::Engine.new(self.source_content, :filename => source_path).render(binding)
                 when '.erb'
-                    ERB.new(self.source_content, nil, '-').result(binding)
+                    erb = ERB.new self.source_content, nil, '-'
+                    erb.filename = source_path
+                    erb.result(binding)
                 when '.html'
                     self.source_content
                 else
