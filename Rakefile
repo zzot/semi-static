@@ -30,7 +30,6 @@ end
 task :default => :test
 
 Rake::RDocTask.new do |r|
-    r.main = 'README'
     r.title    = 'Semi Static'
     r.options << '--line-numbers' << '--inline-source'
     r.rdoc_files.include 'README*', 'lib/**/*.rb'
