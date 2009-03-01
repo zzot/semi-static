@@ -12,7 +12,7 @@ layout: default
         By
         <span class='author'><%= page.author %></span>
         on
-        <span class='date'><%= page.date %></span>
+        <span class='date'><%= page.created.strftime '%B %e, %Y' %></span>
         <% unless page.tags.empty? %>
             in
             <%= page.tags.collect { |t| "<a href='#{t.uri}'>#{t.name}</a>" }.join ', ' %>

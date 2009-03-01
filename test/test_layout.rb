@@ -32,7 +32,7 @@ class TestLayout < Test::Unit::TestCase
         def permalink; "/2009/01/13/test-post.html"; end
         def comments_link; "#{uri}#comments"; end
         def author; "Josh Dady"; end
-        def date; "January 13, 2009"; end
+        def created; Time.local(2009, 1, 13); end
         def time?; true; end
         def time; "11:52 AM"; end
         def tags; []; end

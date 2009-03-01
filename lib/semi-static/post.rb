@@ -86,12 +86,6 @@ module SemiStatic
         end
         
         ##
-        # Formatted date the Post was published (i.e., "March 15, 2009")
-        def date
-            created.strftime '%B %e, %Y'
-        end
-        
-        ##
         # Year the Post was published as a String (i.e., "2009")
         def year
             created.strftime '%Y'
