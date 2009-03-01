@@ -85,14 +85,6 @@ module SemiStatic
             return "#{uri}"
         end
         
-        # def comments_link
-        #     "#{uri}#comments"
-        # end
-        # 
-        # def comment_count
-        #     0
-        # end
-        
         ##
         # Formatted date the Post was published (i.e., "March 15, 2009")
         def date
