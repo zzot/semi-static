@@ -1,6 +1,7 @@
 # Core requirements
 require 'erb'
 require 'tempfile'
+require 'time'
 require 'yaml'
 
 # Gem requirements
