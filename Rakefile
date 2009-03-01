@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
+require 'rdoc'
 
 if RUBY_VERSION.to_f < 1.9
     begin
@@ -29,7 +30,8 @@ end
 task :default => :test
 
 Rake::RDocTask.new do |r|
-    r.title    = 'semi-static'
+    r.main = 'README'
+    r.title    = 'Semi Static'
     r.options << '--line-numbers' << '--inline-source'
     r.rdoc_files.include 'README*', 'lib/**/*.rb'
     r.rdoc_dir = 'doc'
