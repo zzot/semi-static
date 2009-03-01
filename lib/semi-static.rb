@@ -31,27 +31,25 @@ require 'semi-static/statistics'
 require 'semi-static/site'
 
 ##
-# :title: Semi Static
-#
 # Semi Static is yet another static site generator.  I've been playing around
 # with similar systems off and on for years, but it's
 # Jekyll[http://github.com/mojombo/jekyll] that finally convinced me to build
 # (and finish) one for myself.  The main idea that I take from Jekyll is using
 # Git[http://git-scm.com/] as the database.  The idea from Jekyll that I'm not
 # adopting is avoiding Ruby[http://ruby-lang.org/] code evaluation at all
-# costs — I'm not letting other people feed documents into it (as
+# costs -- I'm not letting other people feed documents into it (as
 # GitHub[http://github.com/] Pages[http://pages.github.com] does), so I don't
 # need to protect myself from them.
-#
+# 
 # At some point Semi Static had a sister project, Semi Live, that would generate
 # the site dynamically (probably via Rails[http://rubyonrails.org/]).  I stopped
 # working on it not long after I first started, so don't expect to see it on my
 # projects[http://github.com/zzot] page.
-#
+# 
 # == Features
-#
+# 
 # * Layouts can be Haml[http://haml.hamptoncatlin.com/] or
-#   ERB[http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/] — but not
+#   ERB[http://www.ruby-doc.org/stdlib/libdoc/erb/rdoc/] -- but not
 #   Liquid[http://www.liquidmarkup.org/].
 # * Stylesheets can be Sass[http://haml.hamptoncatlin.com/] or raw CSS.
 # * Pages and posts can be Maruku[http://maruku.rubyforge.org/] or raw HTML.
@@ -63,12 +61,12 @@ require 'semi-static/site'
 # 
 #     $ sudo gem install zzot-semi-static -s http://gems.github.com/
 # 
-# Semi-Static requires the \`Haml\` and \`Maruku\` gems and the \`Pygments\`
+# Semi-Static requires the `Haml` and `Maruku` gems and the `Pygments`
 # library to be installed.
 # 
 # == Usage
 # 
-#     $ semi source-path \[output-path\]
+#     $ semi source-path [output-path]
 # 
 # == License
 # 
