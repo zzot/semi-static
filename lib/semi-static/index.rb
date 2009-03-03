@@ -18,6 +18,10 @@ module SemiStatic
         attr_accessor :context
         
         ##
+        # The index title
+        attr_accessor :title
+        
+        ##
         # Initializes a new Index
         #
         # +site+:: The Site object we belong to
