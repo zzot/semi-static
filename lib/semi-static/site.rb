@@ -41,16 +41,20 @@ module SemiStatic
         attr_reader :tags
         
         ##
-        # Index used to generate the year indices in the output site.
+        # Template used to generate the year indices in the output site.
         attr_reader :year_index
         
         ##
-        # Index used to generate the month indices in the output site.
+        # Template used to generate the month indices in the output site.
         attr_reader :month_index
         
         ##
-        # Index used to generate the day indices in the output site.
+        # Template used to generate the day indices in the output site.
         attr_reader :day_index
+        
+        ##
+        # Template used to generate the tag indices in the output site.
+        attr_reader :tag_index
         
         ##
         # Site configuration.
@@ -178,6 +182,15 @@ module SemiStatic
                             end
                         end
                     end
+                    
+                    unless tag_index.nil?
+                        tags.each do |tag|
+                            tag_index.context = tag.name
+                            tag_index.posts = tag
+                            FileUtils.mkdir_p tag.output_dir
+                            File.open(tag.output_path, 'w') { |f| f.write tag_index.render }
+                        end
+                    end
                 end
             end
             
@@ -275,7 +288,7 @@ module SemiStatic
         def load_indices
             return unless File.directory?(File.join(source_dir, 'indices'))
             
-            with_source_files('indices', '{year,month,day}.{haml,erb}') do |path|
+            with_source_files('indices', '{year,month,day,tag}.{haml,erb}') do |path|
                 # puts path
                 next unless File.file?(path)
                 
@@ -288,6 +301,8 @@ module SemiStatic
                     @month_index = Index.new self, path
                 when 'day'
                     @day_index = Index.new self, path
+                when 'tag'
+                    @tag_index = Index.new self, path
                 else
                     raise ArgumentError, "Unexpected index file: #{path}"
                 end

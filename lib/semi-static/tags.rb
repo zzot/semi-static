@@ -16,12 +16,22 @@ module SemiStatic
         attr_reader :uri
         
         ##
+        # Directory path for the tag index
+        attr_reader :output_dir
+        
+        ##
+        # Path for the tag index
+        attr_reader :output_path
+        
+        ##
         # Initializes a new Tag
         def initialize(owner, name)
             super()
             @name = name
             @slug = Tags.slugize name
             @uri = "#{owner.uri}#{slug}/"
+            @output_dir = "#{owner.output_dir}/#{slug}"
+            @output_path = "#{output_dir}/index.html"
         end
     end
     
@@ -33,6 +43,10 @@ module SemiStatic
         attr_reader :uri
         
         ##
+        # The output directory for the tag index pages.
+        attr_reader :output_dir
+        
+        ##
         # Convert the given display name to a URL-ified one.
         def self.slugize(name)
             name.to_s.gsub(/ /, '-').downcase.to_sym
@@ -42,8 +56,8 @@ module SemiStatic
         # Initializes a new collection with the given name
         def initialize(slug)
             super()
-            @slug = slug
-            @uri = "/#{slug}/"
+            @output_dir = slug.to_s
+            @uri = "/#{output_dir}/"
         end
         
         ##

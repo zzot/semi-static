@@ -2,6 +2,10 @@ require "#{File.dirname __FILE__}/helper"
 require 'semi-static/cli'
 
 class TestOutput < Test::Unit::TestCase
+    TAGS = [ :applescript, :'auto-show', :'catching-up', :'colbert-report',
+             :'comedy-central', :iphone, :raves, :rss, :travel, :typography,
+             :work ]
+    
     def test_output_files
         with_test_cli do |cli|
             cli.clean_first = true
@@ -26,6 +30,12 @@ class TestOutput < Test::Unit::TestCase
                 assert_directory '2008/12'
                 assert_directory '2008/12/04'
                 
+                assert_directory 'tag'
+                for tag in TAGS
+                    assert_directory "tag/#{tag}"
+                    assert_file      "tag/#{tag}/index.html"
+                end
+
                 assert_file      '2005/index.html'
                 assert_file      '2005/03/index.html'
                 assert_file      '2005/03/27/index.html'''
