@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{semi-static}
-  s.version = "0.0.4"
+  s.version = "0.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Josh Dady"]
-  s.date = %q{2009-03-03}
+  s.date = %q{2009-03-04}
   s.default_executable = %q{semi}
   s.description = %q{Semi-Static is yet another static site generator.}
   s.email = %q{projects@zzot.net}
