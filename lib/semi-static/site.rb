@@ -266,7 +266,7 @@ module SemiStatic
         def load_posts
             @posts = Posts.new(self)
             @tags = Tags.new :tag
-            with_source_files('posts', '*.{html,haml,erb,txt,md,markdown}') do |path|
+            with_source_files('posts', '*/*/*/*.{html,haml,erb,txt,md,markdown}') do |path|
                 posts << path
             end
             posts.posts.sort! { |l,r| l.created <=> r.created }

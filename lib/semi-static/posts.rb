@@ -31,7 +31,7 @@ module SemiStatic
         
         ##
         # The format of the Date portion of a post's filename.
-        NAME_RE = /^([0-9]{4})-([0-9]{2})-([0-9]{2})-(.*)/
+        NAME_RE = /^([0-9]{4})\/([0-9]{2})\/([0-9]{2})\/(.*)/
         
         ##
         # Parse the given file as a Post and add it to the list.

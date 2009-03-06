@@ -51,7 +51,7 @@ module SemiStatic
             super
             @metadata = [ :title, :layout, :author ]
             
-            @name = File.basename(source_path, source_ext)
+            @name = source_path[0..(-1-source_ext.length)].gsub(/\//, '-')
             
             @tags = []
             unless source_metadata[:tags].nil?

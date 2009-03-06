@@ -30,7 +30,7 @@ class TestPost < Test::Unit::TestCase
             assert_equal '2008-11-24-lighting-up', post.name
             
             # Test the various path/uri attributes
-            assert_equal '2008-11-24-lighting-up.markdown', post.source_path
+            assert_equal '2008/11/24/lighting-up.markdown', post.source_path
             assert_equal '2008/11/24', post.output_dir
             assert_equal '2008/11/24/lighting-up.html', post.output_path
             assert_equal '/2008/11/24/lighting-up.html', post.uri
@@ -51,13 +51,13 @@ class TestPost < Test::Unit::TestCase
     end
     
     def test_post_impressions
-        # with_test_site { |site| fail site.posts.to_yaml }
+        # with_test_site { |site| fail site.posts.names.keys.to_yaml }
         with_test_site_post('2008-11-26-impressions') do |site,post|
             # Make sure we got what we asked for
             assert_equal '2008-11-26-impressions', post.name
             
             # Test the various path/uri attributes
-            assert_equal '2008-11-26-impressions.md', post.source_path
+            assert_equal '2008/11/26/impressions.md', post.source_path
             assert_equal '2008/11/26', post.output_dir
             assert_equal '2008/11/26/impressions.html', post.output_path
             assert_equal '/2008/11/26/impressions.html', post.uri
@@ -79,7 +79,7 @@ class TestPost < Test::Unit::TestCase
             assert_equal '2008-12-04-the-working-mans-typeface', post.name
             
             # Test the various path/uri attributes
-            assert_equal '2008-12-04-the-working-mans-typeface.html', post.source_path
+            assert_equal '2008/12/04/the-working-mans-typeface.html', post.source_path
             assert_equal '2008/12/04', post.output_dir
             assert_equal '2008/12/04/the-working-mans-typeface.html', post.output_path
             assert_equal '/2008/12/04/the-working-mans-typeface.html', post.uri
